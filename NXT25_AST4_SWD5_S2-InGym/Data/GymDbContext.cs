@@ -12,44 +12,25 @@ namespace NXT25_AST4_SWD5_S2_InGym.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserPhone> UserPhones { get; set; }
-
         public DbSet<Gym> Gyms { get; set; }
         public DbSet<GymLocation> GymLocations { get; set; }
-
         public DbSet<GymManager> GymManagers { get; set; }
-
         public DbSet<Coach> Coaches { get; set; }
-
         public DbSet<Member> Members { get; set; }
-
         public DbSet<Attendance> Attendances { get; set; }
-
         public DbSet<GymSub> GymSubs { get; set; }
-
         public DbSet<PrivateSub> PrivateSubs { get; set; }
-
         public DbSet<HealthMetricLog> HealthMetricLogs { get; set; }
-
         public DbSet<DietaryPlan> DietaryPlans { get; set; }
-
         public DbSet<Exercise> Exercises { get; set; }
-
         public DbSet<WorkoutPlan> WorkoutPlans { get; set; }
-
         public DbSet<GymCoach> GymCoaches { get; set; }
-
         public DbSet<GymMember> GymMembers { get; set; }
-
         public DbSet<MemberHealthMetric> MemberHealthMetrics { get; set; }
-
         public DbSet<MemberDietaryPlan> MemberDietaryPlans { get; set; }
-
         public DbSet<MemberWorkoutPlan> MemberWorkoutPlans { get; set; }
-
         public DbSet<WorkoutPlanExercise> WorkoutPlanExercises { get; set; }
-
         public DbSet<MemberGymSub> MemberGymSubs { get; set; }
-
         public DbSet<MemberPrivateSub> MemberPrivateSubs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -88,17 +69,50 @@ namespace NXT25_AST4_SWD5_S2_InGym.Data
             modelBuilder.Entity<Member>()
                 .HasOne(x => x.User)
                 .WithOne(x => x.Member)
-                .HasForeignKey<Member>(x => x.UserID);
+                .HasForeignKey<Member>(x => x.UserID)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Coach>()
                 .HasOne(x => x.User)
                 .WithOne(x => x.Coach)
-                .HasForeignKey<Coach>(x => x.UserID);
+                .HasForeignKey<Coach>(x => x.UserID)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<GymManager>()
                 .HasOne(x => x.User)
                 .WithOne(x => x.GymManager)
-                .HasForeignKey<GymManager>(x => x.UserID);
+                .HasForeignKey<GymManager>(x => x.UserID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // One To Many
+            modelBuilder.Entity<Member>()
+                .HasOne(x => x.Coach)
+                .WithMany(x => x.Members)
+                .HasForeignKey(x => x.CoachID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Attendance>()
+                .HasOne(x => x.Member)
+                .WithMany(x => x.Attendances)
+                .HasForeignKey(x => x.MemberID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Decimal Precision
+            modelBuilder.Entity<Coach>()
+                .Property(x => x.Salary)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<GymManager>()
+                .Property(x => x.Salary)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<GymSub>()
+                .Property(x => x.Price)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<PrivateSub>()
+                .Property(x => x.Price)
+                .HasPrecision(18, 2);
         }
     }
 }
