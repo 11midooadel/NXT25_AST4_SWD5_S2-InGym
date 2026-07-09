@@ -1,0 +1,130 @@
+﻿/* Reset */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+/* ================= Hero Section ================= */
+
+.hero {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+}
+
+    .hero h5 {
+        font-weight: 600;
+        color: #dc3545;
+    }
+
+    .hero h1 {
+        font-size: 60px;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+
+    .hero p {
+        color: #6c757d;
+        margin: 20px 0;
+        line-height: 1.8;
+    }
+
+    .hero .btn {
+        padding: 12px 30px;
+        border-radius: 8px;
+    }
+.hero-image {
+    max-width: 100%;
+}
+/* ------------Navbar --------- */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.navbar-nav .nav-link {
+    margin: 0 12px;
+    font-weight: 500;
+}
+    .navbar-nav .nav-link:hover {
+        color: #dc3545 !important;
+    }
+.statistics {
+    background: #ffffff;
+    padding: 70px 0;
+}
+
+    .statistics h2 {
+        font-size: 48px;
+        font-weight: bold;
+    }
+
+    .statistics p {
+        font-size: 18px;
+        color: #6c757d;
+    }
+
+/* --------- Features -------- */
+
+.features {
+    background: #f8f9fa;
+}
+
+.feature-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+}
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .feature-card h1 {
+        font-size: 50px;
+    }
+
+    .feature-card h4 {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    .feature-card p {
+        color: #777;
+    }
+
+/* ----------- Footer ---------- */
+
+.footer {
+    background: #212529;
+    color: white;
+    padding: 60px 0;
+}
+
+    .footer a {
+        color: #adb5bd;
+        text-decoration: none;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+        .footer a:hover {
+            color: #dc3545;
+        }
+
+    .footer h4 {
+        margin-bottom: 20px;
+    }

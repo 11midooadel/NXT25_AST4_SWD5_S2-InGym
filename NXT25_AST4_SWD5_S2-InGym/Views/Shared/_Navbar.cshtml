@@ -1,0 +1,62 @@
+﻿<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+
+    <div class="container">
+
+       <a class="navbar-brand fw-bold text-danger"
+         asp-controller="Home"
+         asp-action="Index">
+         InGym
+    </a>
+
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbar">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbar">
+
+            <ul class="navbar-nav mx-auto">
+
+            <li class="nav-item">
+                <a class="nav-link"
+                 asp-controller="Home"
+                 asp-action="Index">
+                Home
+                </a>
+            </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Gyms</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Coaches</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+
+            </ul>
+
+            <div class="d-flex">
+
+    <a href="#" class="btn btn-outline-danger me-2">
+        Register
+    </a>
+
+    <a href="#" class="btn btn-danger">
+        Login
+    </a>
+
+</div>
+
+        </div>
+
+    </div>
+
+</nav>
