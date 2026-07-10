@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NXT25_AST4_SWD5_S2_InGym.Data;
 using NXT25_AST4_SWD5_S2_InGym.Models;
 using NXT25_AST4_SWD5_S2_InGym.ViewModels;
@@ -17,7 +18,7 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
             _context = context;
         }
 
-        // ================= GET =================
+        // ================= Complete Profile =================
 
         [HttpGet]
         public IActionResult CompleteProfile()
@@ -27,13 +28,11 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
             // لو العضو كمل البروفايل قبل كده
             if (_context.Members.Any(m => m.UserID == userId))
             {
-                return RedirectToAction("Dashboard", "Home");
+                return RedirectToAction("ChooseGym");
             }
 
             return View();
         }
-
-        // ================= POST =================
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -46,11 +45,10 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
 
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-            // التأكد إنه مش مسجل قبل كده
             if (_context.Members.Any(m => m.UserID == userId))
             {
                 TempData["Error"] = "Profile already completed.";
-                return RedirectToAction("Dashboard", "Home");
+                return RedirectToAction("ChooseGym");
             }
 
             Member member = new Member
@@ -73,7 +71,58 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
 
             TempData["Success"] = "Profile completed successfully.";
 
+            return RedirectToAction("ChooseGym");
+        }
+
+        // ================= Choose Gym =================
+        [HttpGet]
+        public IActionResult JoinGym(int id)
+        {
+            // الحصول على UserID من الـ Cookie
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            // الحصول على الـ Member الحالي
+            Member? member = _context.Members
+                                     .FirstOrDefault(m => m.UserID == userId);
+
+            if (member == null)
+            {
+                return RedirectToAction("CompleteProfile");
+            }
+
+            // التأكد أنه غير منضم لنفس الجيم
+            bool alreadyJoined = _context.GymMembers
+                                         .Any(gm => gm.MemberID == member.MemberID &&
+                                                    gm.GymID == id);
+
+            if (alreadyJoined)
+            {
+                TempData["Error"] = "You are already a member of this gym.";
+                return RedirectToAction("ChooseGym");
+            }
+
+            GymMember gymMember = new GymMember
+            {
+                MemberID = member.MemberID,
+                GymID = id
+            };
+
+            _context.GymMembers.Add(gymMember);
+            _context.SaveChanges();
+
+            TempData["Success"] = "Gym joined successfully.";
+
             return RedirectToAction("Dashboard", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult ChooseGym()
+        {
+            var gyms = _context.Gyms
+                               .Include(g => g.GymLocations)
+                               .ToList();
+
+            return View(gyms);
         }
     }
 }

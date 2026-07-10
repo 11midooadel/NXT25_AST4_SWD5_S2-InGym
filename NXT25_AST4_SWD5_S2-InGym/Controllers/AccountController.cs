@@ -22,7 +22,6 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            // لو المستخدم عامل Login بالفعل
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Dashboard", "Home");
@@ -49,14 +48,15 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
                 return View(model);
             }
 
-            // مؤقتاً لحد ما نستخدم BCrypt
+            // مؤقتاً لحد ما نستخدم Password Hashing
             if (user.PasswordHash != model.Password)
             {
                 ModelState.AddModelError("", "Invalid email or password.");
                 return View(model);
             }
 
-            var claims = new List<Claim>
+            // إنشاء الـ Claims
+            List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
                 new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
@@ -64,22 +64,37 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
                 new Claim(ClaimTypes.Role, user.Role)
             };
 
-            var identity = new ClaimsIdentity(
+            ClaimsIdentity identity = new ClaimsIdentity(
                 claims,
                 CookieAuthenticationDefaults.AuthenticationScheme);
 
-            var principal = new ClaimsPrincipal(identity);
+            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 principal);
 
-            // لو العضو مكمل البروفايل
-            bool hasProfile = _context.Members.Any(m => m.UserID == user.UserID);
+            // ================= Member Workflow =================
 
-            if (!hasProfile && user.Role == "Member")
+            if (user.Role == "Member")
             {
-                return RedirectToAction("CompleteProfile", "Member");
+                // هل كمل البروفايل؟
+                Member? member = _context.Members
+                                         .FirstOrDefault(m => m.UserID == user.UserID);
+
+                if (member == null)
+                {
+                    return RedirectToAction("CompleteProfile", "Member");
+                }
+
+                // هل انضم إلى جيم؟
+                bool joinedGym = _context.GymMembers
+                                         .Any(gm => gm.MemberID == member.MemberID);
+
+                if (!joinedGym)
+                {
+                    return RedirectToAction("ChooseGym", "Member");
+                }
             }
 
             return RedirectToAction("Dashboard", "Home");
@@ -113,7 +128,7 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,
-                PasswordHash = model.Password, // هنحولها BCrypt بعدين
+                PasswordHash = model.Password,
                 Role = "Member"
             };
 

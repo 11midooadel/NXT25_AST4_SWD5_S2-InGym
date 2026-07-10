@@ -17,5 +17,9 @@
         public DateTime JoinDate { get; set; }
 
         public bool IsActive { get; set; }
+
+        public string GymName { get; set; } = string.Empty;
+
+        public string GymLocation { get; set; } = string.Empty;
     }
 }

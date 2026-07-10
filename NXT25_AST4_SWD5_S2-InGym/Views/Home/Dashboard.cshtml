@@ -1,14 +1,103 @@
-﻿@{
+﻿@model NXT25_AST4_SWD5_S2_InGym.ViewModels.DashboardViewModel
+
+@{
     ViewData["Title"] = "Dashboard";
 }
 
 <div class="container mt-5">
 
-    <div class="alert alert-success">
+    <h2 class="mb-4 text-danger">
+        Welcome, @Model.FullName 👋
+    </h2>
 
-        <h2>Welcome @User.Identity?.Name 👋</h2>
+    <div class="row">
 
-        <p>You have successfully logged in.</p>
+        <!-- Personal Information -->
+        <div class="col-md-4 mb-4">
+
+            <div class="card shadow h-100">
+
+                <div class="card-header bg-danger text-white">
+                    Personal Information
+                </div>
+
+                <div class="card-body">
+
+                    <p><strong>Name:</strong> @Model.FullName</p>
+
+                    <p><strong>Email:</strong> @Model.Email</p>
+
+                    <p><strong>Gender:</strong> @Model.Gender</p>
+
+                    <p><strong>Join Date:</strong> @Model.JoinDate.ToString("dd/MM/yyyy")</p>
+
+                    <p>
+                        <strong>Status:</strong>
+
+                        @if (Model.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactive</span>
+                        }
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Fitness Information -->
+        <div class="col-md-4 mb-4">
+
+            <div class="card shadow h-100">
+
+                <div class="card-header bg-dark text-white">
+                    Fitness Information
+                </div>
+
+                <div class="card-body">
+
+                    <p><strong>Height:</strong> @Model.Height cm</p>
+
+                    <p><strong>Weight:</strong> @Model.Weight kg</p>
+
+                    <p><strong>Goal:</strong></p>
+
+                    <div class="alert alert-light border">
+                        @Model.Goals
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Gym Information -->
+        <div class="col-md-4 mb-4">
+
+            <div class="card shadow h-100">
+
+                <div class="card-header bg-primary text-white">
+                    Gym Information
+                </div>
+
+                <div class="card-body">
+
+                    <p><strong>Gym:</strong> @Model.GymName</p>
+
+                    <p><strong>Location:</strong> @Model.GymLocation</p>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
