@@ -28,12 +28,12 @@ namespace NXT25_AST4_SWD5_S2_InGym.Models
         // Foreign Keys
         public int UserID { get; set; }
 
-        public int CoachID { get; set; }
+        public int? CoachID { get; set; }
 
         // Navigation Properties
         public User User { get; set; } = null!;
 
-        public Coach Coach { get; set; } = null!;
+        public Coach? Coach { get; set; }
 
         public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
 

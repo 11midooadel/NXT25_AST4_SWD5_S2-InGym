@@ -1,5 +1,6 @@
 using NXT25_AST4_SWD5_S2_InGym.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace NXT25_AST4_SWD5_S2_InGym
 {
@@ -11,6 +12,12 @@ namespace NXT25_AST4_SWD5_S2_InGym
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Home/Index";
+    });
             builder.Services.AddDbContext<GymDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
@@ -26,6 +33,7 @@ namespace NXT25_AST4_SWD5_S2_InGym
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

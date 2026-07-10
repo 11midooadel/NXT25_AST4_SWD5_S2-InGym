@@ -2,11 +2,11 @@
 
     <div class="container">
 
-       <a class="navbar-brand fw-bold text-danger"
-         asp-controller="Home"
-         asp-action="Index">
-         InGym
-    </a>
+        <a class="navbar-brand fw-bold text-danger"
+           asp-controller="Home"
+           asp-action="Index">
+            InGym
+        </a>
 
         <button class="navbar-toggler"
                 type="button"
@@ -21,39 +21,75 @@
 
             <ul class="navbar-nav mx-auto">
 
-            <li class="nav-item">
-                <a class="nav-link"
-                 asp-controller="Home"
-                 asp-action="Index">
-                Home
-                </a>
-            </li>
-
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Gyms</a>
+                    <a class="nav-link"
+                       asp-controller="Home"
+                       asp-action="Index">
+                        Home
+                    </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Coaches</a>
+                    <a class="nav-link" href="#">
+                        Gyms
+                    </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="nav-link" href="#">
+                        Coaches
+                    </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        Contact
+                    </a>
+                </li>
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="Home"
+                           asp-action="Dashboard">
+                            Dashboard
+                        </a>
+                    </li>
+                }
 
             </ul>
 
-            <div class="d-flex">
+            <div class="d-flex align-items-center">
 
-    <a href="#" class="btn btn-outline-danger me-2">
-        Register
-    </a>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <span class="me-3 fw-semibold">
+                        Welcome, @User.Identity.Name
+                    </span>
 
-    <a href="#" class="btn btn-danger">
-        Login
-    </a>
+                    <a asp-controller="Account"
+                       asp-action="Logout"
+                       class="btn btn-danger">
+                        Logout
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Account"
+                       asp-action="Register"
+                       class="btn btn-outline-danger me-2">
+                        Register
+                    </a>
 
-</div>
+                    <a asp-controller="Account"
+                       asp-action="Login"
+                       class="btn btn-danger">
+                        Login
+                    </a>
+                }
+
+            </div>
 
         </div>
 
