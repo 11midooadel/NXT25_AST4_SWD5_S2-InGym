@@ -27,22 +27,14 @@
 <table class="table table-bordered">
 
     <thead>
-
         <tr>
-
             <th>Exercise</th>
-
             <th>Day</th>
-
             <th>Sets</th>
-
             <th>Reps</th>
-
+            <th>Actions</th>
         </tr>
-
     </thead>
-
-    <tbody>
 
         @foreach (var item in Model.WorkoutPlanExercises)
         {
@@ -55,6 +47,23 @@
                 <td>@item.Sets</td>
 
                 <td>@item.Reps</td>
+                <td>
+
+                    <a asp-action="EditExercise"
+                       asp-route-planId="@item.PlanID"
+                       asp-route-exerciseId="@item.ExerciseID"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <a asp-action="DeleteExercise"
+                       asp-route-planId="@item.PlanID"
+                       asp-route-exerciseId="@item.ExerciseID"
+                       class="btn btn-danger btn-sm">
+                        Delete
+                    </a>
+
+                </td>
 
             </tr>
         }
