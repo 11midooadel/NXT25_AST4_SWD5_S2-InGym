@@ -294,6 +294,89 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
                 id = model.PlanID
             });
         }
+        [HttpGet]
+        [Authorize(Roles = "Coach")]
+        public IActionResult EditExercise(int planId, int exerciseId)
+        {
+            var item = _context.WorkoutPlanExercises
+                .FirstOrDefault(x => x.PlanID == planId &&
+                                     x.ExerciseID == exerciseId);
+
+            if (item == null)
+                return NotFound();
+
+            EditExerciseViewModel model = new()
+            {
+                PlanID = item.PlanID,
+                ExerciseID = item.ExerciseID,
+                WorkoutDay = item.WorkoutDay,
+                Sets = item.Sets,
+                Reps = item.Reps,
+
+                Exercises = _context.Exercises
+                    .Select(x => new SelectListItem
+                    {
+                        Value = x.ExerciseID.ToString(),
+                        Text = x.ExerciseName
+                    }).ToList()
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Coach")]
+        public IActionResult EditExercise(EditExerciseViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Exercises = _context.Exercises
+                    .Select(x => new SelectListItem
+                    {
+                        Value = x.ExerciseID.ToString(),
+                        Text = x.ExerciseName
+                    }).ToList();
+
+                return View(model);
+            }
+
+            var item = _context.WorkoutPlanExercises
+                .FirstOrDefault(x => x.PlanID == model.PlanID &&
+                                     x.ExerciseID == model.ExerciseID);
+
+            if (item == null)
+                return NotFound();
+
+            item.WorkoutDay = model.WorkoutDay;
+            item.Sets = model.Sets;
+            item.Reps = model.Reps;
+
+            _context.SaveChanges();
+
+            TempData["Success"] = "Exercise Updated Successfully.";
+
+            return RedirectToAction(nameof(ManageWorkoutPlan),
+                new { id = model.PlanID });
+        }
+        [Authorize(Roles = "Coach")]
+        public IActionResult DeleteExercise(int planId, int exerciseId)
+        {
+            var item = _context.WorkoutPlanExercises
+                .FirstOrDefault(x => x.PlanID == planId &&
+                                     x.ExerciseID == exerciseId);
+
+            if (item == null)
+                return NotFound();
+
+            _context.WorkoutPlanExercises.Remove(item);
+
+            _context.SaveChanges();
+
+            TempData["Success"] = "Exercise Deleted Successfully.";
+
+            return RedirectToAction(nameof(ManageWorkoutPlan),
+                new { id = planId });
+        }
 
         // ================= Edit Exercise In Plan =================
 

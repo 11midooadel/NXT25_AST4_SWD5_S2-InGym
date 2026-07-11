@@ -16,7 +16,7 @@
                 <div class="card">
                     <div class="card-body">
                         <!-- Exercise Selection (Read-only) -->
-                        <div class="mb-3">
+    <div class="mb-3">
                             <label class="form-label"><strong>Exercise</strong></label>
                             <select class="form-select" disabled>
                                 @foreach (var exercise in Model.Exercises)
@@ -26,14 +26,14 @@
                                         @exercise.Text
                                     </option>
                                 }
-                            </select>
+        </select>
                             <small class="form-text text-muted">Change via Add Exercise</small>
-                        </div>
+    </div>
 
                         <hr />
 
                         <!-- Workout Day -->
-                        <div class="mb-3">
+    <div class="mb-3">
                             <label for="workoutDay" class="form-label"><strong>Workout Day</strong></label>
                             <select name="workoutDay" class="form-select" id="workoutDay" required>
                                 <option value="">-- Select Day --</option>
@@ -44,8 +44,8 @@
                                 <option value="4" selected="@(Model.WorkoutDay == DayOfWeek.Thursday)">Thursday</option>
                                 <option value="5" selected="@(Model.WorkoutDay == DayOfWeek.Friday)">Friday</option>
                                 <option value="6" selected="@(Model.WorkoutDay == DayOfWeek.Saturday)">Saturday</option>
-                            </select>
-                        </div>
+        </select>
+    </div>
 
                         <hr />
 
@@ -57,7 +57,7 @@
                                 <label asp-for="Sets" class="form-label"><strong>Sets</strong></label>
                                 <input asp-for="Sets" type="number" class="form-control" min="1" max="10" />
                                 <span asp-validation-for="Sets" class="text-danger"></span>
-                            </div>
+    </div>
 
                             <div class="col-md-6 mb-3">
                                 <label asp-for="Reps" class="form-label"><strong>Reps</strong></label>
@@ -66,13 +66,13 @@
                             </div>
                         </div>
                     </div>
-                </div>
+    </div>
 
                 <!-- Buttons -->
                 <div class="mt-4">
                     <button type="submit" class="btn btn-success btn-lg">
                         <i class="bi bi-check-circle"></i> Update Exercise
-                    </button>
+    </button>
                     <a href="@Url.Action("ManageWorkoutPlan", new { id = Model.PlanID })" class="btn btn-secondary btn-lg">
                         <i class="bi bi-x-circle"></i> Cancel
                     </a>
