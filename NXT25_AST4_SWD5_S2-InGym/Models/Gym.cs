@@ -20,5 +20,6 @@ namespace NXT25_AST4_SWD5_S2_InGym.Models
         public ICollection<GymMember> GymMembers { get; set; } = new List<GymMember>();
 
         public ICollection<MemberGymSub> MemberGymSubs { get; set; } = new List<MemberGymSub>();
+        public ICollection<GymManager> GymManagers { get; set; } = new List<GymManager>();
     }
 }

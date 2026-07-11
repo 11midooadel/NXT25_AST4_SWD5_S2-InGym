@@ -32,6 +32,7 @@ namespace NXT25_AST4_SWD5_S2_InGym.Data
         public DbSet<WorkoutPlanExercise> WorkoutPlanExercises { get; set; }
         public DbSet<MemberGymSub> MemberGymSubs { get; set; }
         public DbSet<MemberPrivateSub> MemberPrivateSubs { get; set; }
+        public DbSet<Admin> Admins { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -113,6 +114,25 @@ namespace NXT25_AST4_SWD5_S2_InGym.Data
             modelBuilder.Entity<PrivateSub>()
                 .Property(x => x.Price)
                 .HasPrecision(18, 2);
+            modelBuilder.Entity<GymManager>()
+            .HasOne(gm => gm.Gym)
+        .WithMany(g => g.GymManagers)
+        .HasForeignKey(gm => gm.GymID)
+        .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Admin>()
+    .HasOne(a => a.User)
+    .WithOne(u => u.Admin)
+    .HasForeignKey<Admin>(a => a.UserID)
+    .OnDelete(DeleteBehavior.Restrict);
         }
+           
     }
+
+
+
+
+
+
 }
+
+

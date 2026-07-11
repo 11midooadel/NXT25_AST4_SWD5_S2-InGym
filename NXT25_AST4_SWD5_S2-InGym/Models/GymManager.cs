@@ -14,5 +14,8 @@ namespace NXT25_AST4_SWD5_S2_InGym.Models
         public int UserID { get; set; }
 
         public User User { get; set; } = null!;
+        public int GymID { get; set; }
+
+        public Gym Gym { get; set; } = null!;
     }
 }

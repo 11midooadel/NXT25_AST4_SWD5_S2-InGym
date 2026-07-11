@@ -6,6 +6,12 @@
 
         public int ExerciseID { get; set; }
 
+        public DayOfWeek WorkoutDay { get; set; }
+
+        public int Sets { get; set; }
+
+        public int Reps { get; set; }
+
         public WorkoutPlan WorkoutPlan { get; set; } = null!;
 
         public Exercise Exercise { get; set; } = null!;

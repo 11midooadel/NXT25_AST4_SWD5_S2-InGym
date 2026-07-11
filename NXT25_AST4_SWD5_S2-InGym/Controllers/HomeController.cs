@@ -52,7 +52,7 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
                                 .Include(c => c.User)
                                 .FirstOrDefault(c => c.CoachID == member.CoachID);
 
-            // Private Subscription
+            // Private Trainer
             var privateSubscription = _context.MemberPrivateSubs
                                               .Include(x => x.Coach)
                                               .ThenInclude(c => c.User)
@@ -60,9 +60,15 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
                                               .FirstOrDefault(x => x.MemberID == member.MemberID &&
                                                                    x.IsActive);
 
+            // Today's Attendance
+            var todayAttendance = _context.Attendances
+                                          .FirstOrDefault(a =>
+                                              a.MemberID == member.MemberID &&
+                                              a.CheckInTime.Date == DateTime.Today);
+
             DashboardViewModel model = new DashboardViewModel
             {
-                // Member
+                // ================= Member =================
                 FullName = member.User.FirstName + " " + member.User.LastName,
                 Email = member.User.Email,
                 Gender = member.Gender,
@@ -72,11 +78,11 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
                 JoinDate = member.JoinDate,
                 IsActive = member.IsActive,
 
-                // Gym
+                // ================= Gym =================
                 GymName = gymMember?.Gym.GymName ?? "No Gym",
                 GymLocation = gymMember?.Gym.GymLocations.FirstOrDefault()?.Location ?? "-",
 
-                // Gym Subscription
+                // ================= Gym Subscription =================
                 SubscriptionPrice = gymSubscription?.GymSub.Price ?? 0,
                 DurationMonths = gymSubscription?.GymSub.DurationMonths ?? 0,
                 StartDate = gymSubscription?.StartDate ?? DateTime.MinValue,
@@ -86,14 +92,16 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
                     ? 0
                     : Math.Max((gymSubscription.EndDate - DateTime.Now).Days, 0),
 
-                // Gym Coach
-                CoachName = coach == null ? "No Coach Selected"
-                                          : coach.User.FirstName + " " + coach.User.LastName,
+                // ================= Gym Coach =================
+                CoachName = coach == null
+                    ? "No Coach Selected"
+                    : coach.User.FirstName + " " + coach.User.LastName,
+
                 CoachEmail = coach?.User.Email ?? "-",
                 CoachSpeciality = coach?.Speciality ?? "-",
                 CoachRating = coach?.Rating ?? 0,
 
-                // Private Trainer
+                // ================= Private Trainer =================
                 HasPrivateSubscription = privateSubscription != null,
 
                 PrivateCoachName = privateSubscription == null
@@ -101,33 +109,20 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
                     : privateSubscription.Coach.User.FirstName + " " + privateSubscription.Coach.User.LastName,
 
                 PrivateCoachEmail = privateSubscription?.Coach.User.Email ?? "",
-
                 PrivateCoachSpeciality = privateSubscription?.Coach.Speciality ?? "",
-
                 PrivateCoachRating = privateSubscription?.Coach.Rating ?? 0,
 
                 PrivatePackagePrice = privateSubscription?.PrivateSub.Price ?? 0,
-
                 PrivateSessionCount = privateSubscription?.PrivateSub.SessionCount ?? 0,
+                PrivateEndDate = privateSubscription?.EndDate ?? DateTime.MinValue,
 
-                PrivateEndDate = privateSubscription?.EndDate ?? DateTime.MinValue
+                // ================= Attendance =================
+                CheckedInToday = todayAttendance != null,
+                TodayCheckIn = todayAttendance?.CheckInTime,
+                TodayCheckOut = todayAttendance?.CheckOutTime
             };
 
             return View(model);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel
-            {
-                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-            });
         }
     }
 }

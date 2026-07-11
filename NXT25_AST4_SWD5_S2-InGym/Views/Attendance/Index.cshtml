@@ -1,0 +1,191 @@
+﻿@model NXT25_AST4_SWD5_S2_InGym.ViewModels.AttendanceViewModel
+
+@{
+    ViewData["Title"] = "Attendance";
+}
+
+<div class="container mt-5">
+
+    <h2 class="text-center text-primary mb-4">
+        Attendance
+    </h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="row">
+
+        <div class="col-md-4">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-primary text-white">
+                    Today's Attendance
+                </div>
+
+                <div class="card-body">
+
+                    @if (!Model.CheckedIn)
+                    {
+                        <h5 class="text-danger">
+                            Not Checked In
+                        </h5>
+
+                        <a asp-action="CheckIn"
+                           class="btn btn-success w-100 mt-3">
+
+                            Check In
+
+                        </a>
+                    }
+                    else
+                    {
+                        <p>
+
+                            <strong>Check In:</strong>
+
+                            @Model.CheckInTime?.ToString("hh:mm tt")
+
+                        </p>
+
+                        @if (Model.CheckOutTime == null)
+                        {
+                            <p class="text-warning">
+
+                                You are currently inside the gym.
+
+                            </p>
+
+                            <a asp-action="CheckOut"
+                               class="btn btn-danger w-100">
+
+                                Check Out
+
+                            </a>
+                        }
+                        else
+                        {
+                            <p>
+
+                                <strong>Check Out:</strong>
+
+                                @Model.CheckOutTime?.ToString("hh:mm tt")
+
+                            </p>
+
+                            <span class="badge bg-success">
+
+                                Attendance Completed
+
+                            </span>
+                        }
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-8">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-dark text-white">
+                    Attendance History
+                </div>
+
+                <div class="card-body">
+
+                    @if (Model.AttendanceHistory.Any())
+                    {
+                        <table class="table table-bordered table-hover">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Date</th>
+
+                                    <th>Check In</th>
+
+                                    <th>Check Out</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var item in Model.AttendanceHistory)
+                                {
+                                    <tr>
+
+                                        <td>
+
+                                            @item.CheckInTime.ToString("dd/MM/yyyy")
+
+                                        </td>
+
+                                        <td>
+
+                                            @item.CheckInTime.ToString("hh:mm tt")
+
+                                        </td>
+
+                                        <td>
+
+                                            @(item.CheckOutTime.HasValue
+                                                ? item.CheckOutTime.Value.ToString("hh:mm tt")
+                                                : "-")
+
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+
+                            No attendance records found.
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="text-center mt-4">
+
+        <a asp-controller="Home"
+           asp-action="Dashboard"
+           class="btn btn-secondary">
+
+            Back To Dashboard
+
+        </a>
+
+    </div>
+
+</div>

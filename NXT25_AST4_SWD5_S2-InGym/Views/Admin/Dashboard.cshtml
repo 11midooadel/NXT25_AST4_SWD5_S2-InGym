@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4 text-center">
+        Admin Dashboard
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="card text-center shadow border-0 bg-primary text-white">
+                <div class="card-body">
+                    <h1>@ViewBag.Gyms</h1>
+                    <h5>Gyms</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow border-0 bg-success text-white">
+                <div class="card-body">
+                    <h1>@ViewBag.Members</h1>
+                    <h5>Members</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow border-0 bg-warning">
+                <div class="card-body">
+                    <h1>@ViewBag.Coaches</h1>
+                    <h5>Coaches</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow border-0 bg-danger text-white">
+                <div class="card-body">
+                    <h1>@ViewBag.Managers</h1>
+                    <h5>Managers</h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="my-5" />
+
+    <div class="row g-3">
+
+        <div class="col-md-4">
+            <a asp-action="AddGym"
+               class="btn btn-primary w-100 p-3">
+                Add Gym
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a asp-action="Gyms"
+               class="btn btn-outline-primary w-100 p-3">
+                View Gyms
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a asp-action="AddGymManager"
+               class="btn btn-success w-100 p-3">
+                Add Gym Manager
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a asp-action="GymManagers"
+               class="btn btn-outline-success w-100 p-3">
+                View Gym Managers
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a asp-action="AddCoach"
+               class="btn btn-warning w-100 p-3">
+                Add Coach
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a asp-action="Coaches"
+               class="btn btn-outline-warning w-100 p-3">
+                View Coaches
+            </a>
+        </div>
+
+    </div>
+
+</div>

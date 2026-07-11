@@ -9,6 +9,8 @@ namespace NXT25_AST4_SWD5_S2_InGym.Models
 
         public DateTime CheckInTime { get; set; }
 
+        public DateTime? CheckOutTime { get; set; }
+
         public int MemberID { get; set; }
 
         public Member Member { get; set; } = null!;

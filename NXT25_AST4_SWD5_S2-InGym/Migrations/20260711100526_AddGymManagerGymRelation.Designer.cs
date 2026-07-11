@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NXT25_AST4_SWD5_S2_InGym.Data;
 
@@ -11,9 +12,11 @@ using NXT25_AST4_SWD5_S2_InGym.Data;
 namespace NXT25_AST4_SWD5_S2InGym.Migrations
 {
     [DbContext(typeof(GymDbContext))]
-    partial class GymDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260711100526_AddGymManagerGymRelation")]
+    partial class AddGymManagerGymRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,28 +24,6 @@ namespace NXT25_AST4_SWD5_S2InGym.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("NXT25_AST4_SWD5_S2_InGym.Models.Admin", b =>
-                {
-                    b.Property<int>("AdminID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminID"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("AdminID");
-
-                    b.HasIndex("UserID")
-                        .IsUnique();
-
-                    b.ToTable("Admins");
-                });
 
             modelBuilder.Entity("NXT25_AST4_SWD5_S2_InGym.Models.Attendance", b =>
                 {
@@ -588,17 +569,6 @@ namespace NXT25_AST4_SWD5_S2InGym.Migrations
                     b.ToTable("WorkoutPlanExercises");
                 });
 
-            modelBuilder.Entity("NXT25_AST4_SWD5_S2_InGym.Models.Admin", b =>
-                {
-                    b.HasOne("NXT25_AST4_SWD5_S2_InGym.Models.User", "User")
-                        .WithOne("Admin")
-                        .HasForeignKey("NXT25_AST4_SWD5_S2_InGym.Models.Admin", "UserID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("NXT25_AST4_SWD5_S2_InGym.Models.Attendance", b =>
                 {
                     b.HasOne("NXT25_AST4_SWD5_S2_InGym.Models.Member", "Member")
@@ -654,7 +624,7 @@ namespace NXT25_AST4_SWD5_S2InGym.Migrations
             modelBuilder.Entity("NXT25_AST4_SWD5_S2_InGym.Models.GymManager", b =>
                 {
                     b.HasOne("NXT25_AST4_SWD5_S2_InGym.Models.Gym", "Gym")
-                        .WithMany("GymManagers")
+                        .WithMany()
                         .HasForeignKey("GymID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -873,8 +843,6 @@ namespace NXT25_AST4_SWD5_S2InGym.Migrations
 
                     b.Navigation("GymLocations");
 
-                    b.Navigation("GymManagers");
-
                     b.Navigation("GymMembers");
 
                     b.Navigation("MemberGymSubs");
@@ -914,8 +882,6 @@ namespace NXT25_AST4_SWD5_S2InGym.Migrations
 
             modelBuilder.Entity("NXT25_AST4_SWD5_S2_InGym.Models.User", b =>
                 {
-                    b.Navigation("Admin");
-
                     b.Navigation("Coach");
 
                     b.Navigation("GymManager");

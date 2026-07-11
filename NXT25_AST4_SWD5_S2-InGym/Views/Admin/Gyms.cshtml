@@ -1,0 +1,42 @@
+﻿@model IEnumerable<NXT25_AST4_SWD5_S2_InGym.Models.Gym>
+
+<h2>Gyms</h2>
+
+<a asp-action="AddGym" class="btn btn-success mb-3">
+    Add Gym
+</a>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>ID</th>
+
+            <th>Name</th>
+
+            <th>Registration Date</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var gym in Model)
+        {
+            <tr>
+
+                <td>@gym.GymID</td>
+
+                <td>@gym.GymName</td>
+
+                <td>@gym.RegistrationDate.ToShortDateString()</td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

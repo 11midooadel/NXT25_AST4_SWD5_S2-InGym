@@ -24,5 +24,6 @@ namespace NXT25_AST4_SWD5_S2_InGym.Models
         public Coach? Coach { get; set; }
 
         public GymManager? GymManager { get; set; }
+        public Admin? Admin { get; set; }
     }
 }

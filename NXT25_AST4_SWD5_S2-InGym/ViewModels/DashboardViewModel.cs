@@ -66,5 +66,12 @@
         public int PrivateSessionCount { get; set; }
 
         public DateTime PrivateEndDate { get; set; }
+        // ================= Attendance =================
+
+        public bool CheckedInToday { get; set; }
+
+        public DateTime? TodayCheckIn { get; set; }
+
+        public DateTime? TodayCheckOut { get; set; }
     }
 }
