@@ -7,7 +7,13 @@ namespace NXT25_AST4_SWD5_S2_InGym.Models
         [Key]
         public int PrivateSubID { get; set; }
 
+        public string Name { get; set; } = string.Empty;
+
+        public string Description { get; set; } = string.Empty;
+
         public decimal Price { get; set; }
+
+        public int DurationMonths { get; set; }
 
         public int SessionCount { get; set; }
 

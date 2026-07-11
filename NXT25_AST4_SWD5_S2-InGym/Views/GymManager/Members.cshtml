@@ -1,5 +1,6 @@
+@model List<Member>
 @{
-	ViewData["Title"] = "Manage Members";
+    ViewData["Title"] = "Manage Members";
 	var members = ViewBag.Members as dynamic;
 }
 
@@ -8,60 +9,64 @@
 		<div class="col-md-12">
 			<div class="d-flex justify-content-between align-items-center mb-4">
 				<h2>Members</h2>
-				<a href="@Url.Action("Dashboard")" class="btn btn-secondary">
+            <a href="@Url.Action("Dashboard")" class="btn btn-secondary">
 					<i class="fas fa-arrow-left"></i> Back
-				</a>
-			</div>
+            </a>
+        </div>
+    </div>
 
 			@if (Model.Any())
-			{
-				<div class="table-responsive">
+    {
+        <div class="table-responsive">
 					<table class="table table-hover table-striped">
-						<thead class="table-dark">
-							<tr>
-								<th>Name</th>
-								<th>Email</th>
-								<th>Coach</th>
-								<th>Join Date</th>
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Gender</th>
+                        <th>Coach</th>
+                        <th>Status</th>
+                        <th>Join Date</th>
 								<th>Status</th>
 								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach (var member in Model)
-							{
-								<tr>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var member in Model)
+                    {
+                        <tr>
 									<td>@member.FullName</td>
 									<td>@member.Email</td>
 									<td>@member.CoachName</td>
 									<td>@member.JoinDate.ToString("MMM dd, yyyy")</td>
-									<td>
-										@if (member.IsActive)
-										{
-											<span class="badge bg-success">Active</span>
-										}
-										else
-										{
+                            <td>
+                                @if (member.IsActive)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
 											<span class="badge bg-danger">Inactive</span>
-										}
-									</td>
-									<td>
+                                }
+                            </td>
+                            <td>@member.JoinDate.ToString("dd/MM/yyyy")</td>
+                            <td>
 										<a href="@Url.Action("MemberDetails", new { id = member.MemberID })" class="btn btn-sm btn-info">
 											<i class="fas fa-eye"></i> View
-										</a>
-									</td>
-								</tr>
-							}
-						</tbody>
-					</table>
-				</div>
-			}
-			else
-			{
-				<div class="alert alert-info" role="alert">
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
 					<i class="fas fa-info-circle"></i> No members in your gym yet.
-				</div>
-			}
-		</div>
+        </div>
+    }
+</div>
 	</div>
 </div>

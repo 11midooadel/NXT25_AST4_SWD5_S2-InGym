@@ -1,0 +1,156 @@
+@model Member
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2>@Model.User.FirstName @Model.User.LastName</h2>
+            <p class="text-muted">Member Since @Model.JoinDate.ToString("dd MMMM yyyy")</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="@Url.Action("EditProfile")" class="btn btn-warning">
+                <i class="bi bi-pencil"></i> Edit Profile
+            </a>
+            <a href="@Url.Action("Dashboard", "Home")" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Personal Info Card -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Personal Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="text-muted">Email</h6>
+                        <p>@Model.User.Email</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="text-muted">Gender</h6>
+                        <p>@Model.Gender</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="text-muted">Birth Date</h6>
+                        <p>@Model.BirthDate.ToString("dd/MM/yyyy")</p>
+                    </div>
+                    <div>
+                        <h6 class="text-muted">Join Date</h6>
+                        <p>@Model.JoinDate.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Physical Info Card -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Physical Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="text-muted">Height (cm)</h6>
+                        <p>@Model.Height</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="text-muted">Weight (kg)</h6>
+                        <p>@Model.Weight</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="text-muted">Status</h6>
+                        @if (Model.IsActive)
+                        {
+                            <span class="badge bg-success fs-6">Active Member</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary fs-6">Inactive</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Health Info Card -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Fitness Goals</h5>
+                </div>
+                <div class="card-body">
+                    <p>@(string.IsNullOrEmpty(Model.Goals) ? "No goals set yet" : Model.Goals)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coach Info Card -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">Assigned Coach</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Coach != null)
+                    {
+                        <div class="mb-3">
+                            <h6 class="text-muted">Coach Name</h6>
+                            <p><strong>@Model.Coach.User.FirstName @Model.Coach.User.LastName</strong></p>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="text-muted">Email</h6>
+                            <p>@Model.Coach.User.Email</p>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="text-muted">Speciality</h6>
+                            <p>@Model.Coach.Speciality</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No coach assigned yet</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Physical Restrictions Card -->
+        @if (!string.IsNullOrEmpty(Model.PhysRestrictions))
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card border-warning">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">Physical Restrictions</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>@Model.PhysRestrictions</p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Chronic Diseases Card -->
+        @if (!string.IsNullOrEmpty(Model.ChronicDiseases))
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card border-danger">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">Chronic Diseases</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>@Model.ChronicDiseases</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,106 @@
+@model Member
+@{
+    ViewData["Title"] = "Edit My Profile";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4">Edit My Profile</h2>
+
+            <form method="post" asp-action="EditProfile" asp-controller="Member" class="needs-validation">
+                @Html.AntiForgeryToken()
+
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Personal Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Birth Date -->
+                        <div class="mb-3">
+                            <label asp-for="BirthDate" class="form-label"><strong>Birth Date</strong></label>
+                            <input asp-for="BirthDate" type="date" class="form-control" />
+                            <span asp-validation-for="BirthDate" class="text-danger"></span>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="mb-3">
+                            <label asp-for="Gender" class="form-label"><strong>Gender</strong></label>
+                            <select asp-for="Gender" class="form-select">
+                                <option value="">-- Select --</option>
+                                <option value="Male" selected="@(Model.Gender == "Male")">Male</option>
+                                <option value="Female" selected="@(Model.Gender == "Female")">Female</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Physical Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Height -->
+                        <div class="mb-3">
+                            <label asp-for="Height" class="form-label"><strong>Height (cm)</strong></label>
+                            <input asp-for="Height" type="number" step="0.1" class="form-control" placeholder="175" />
+                            <span asp-validation-for="Height" class="text-danger"></span>
+                        </div>
+
+                        <!-- Weight -->
+                        <div class="mb-3">
+                            <label asp-for="Weight" class="form-label"><strong>Weight (kg)</strong></label>
+                            <input asp-for="Weight" type="number" step="0.1" class="form-control" placeholder="75" />
+                            <span asp-validation-for="Weight" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Health Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Goals -->
+                        <div class="mb-3">
+                            <label asp-for="Goals" class="form-label"><strong>Fitness Goals</strong></label>
+                            <textarea asp-for="Goals" class="form-control" rows="3" placeholder="e.g., Lose Weight, Build Muscle"></textarea>
+                            <span asp-validation-for="Goals" class="text-danger"></span>
+                        </div>
+
+                        <!-- Physical Restrictions -->
+                        <div class="mb-3">
+                            <label asp-for="PhysRestrictions" class="form-label"><strong>Physical Restrictions</strong></label>
+                            <textarea asp-for="PhysRestrictions" class="form-control" rows="3" placeholder="e.g., Knee problem, Back pain"></textarea>
+                            <span asp-validation-for="PhysRestrictions" class="text-danger"></span>
+                        </div>
+
+                        <!-- Chronic Diseases -->
+                        <div class="mb-3">
+                            <label asp-for="ChronicDiseases" class="form-label"><strong>Chronic Diseases</strong></label>
+                            <textarea asp-for="ChronicDiseases" class="form-control" rows="3" placeholder="e.g., Diabetes, High Blood Pressure"></textarea>
+                            <span asp-validation-for="ChronicDiseases" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="bi bi-check-circle"></i> Update Profile
+                    </button>
+                    <a href="@Url.Action("Dashboard", "Home")" class="btn btn-secondary btn-lg">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

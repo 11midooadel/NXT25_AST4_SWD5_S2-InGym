@@ -1,47 +1,89 @@
-﻿@model NXT25_AST4_SWD5_S2_InGym.ViewModels.Coach.EditExerciseViewModel
+@model NXT25_AST4_SWD5_S2_InGym.ViewModels.Coach.AddExerciseToPlanViewModel
+@{
+    ViewData["Title"] = "Edit Exercise";
+}
 
-<h2>Edit Exercise</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4">Edit Exercise</h2>
 
-<form asp-action="EditExercise" method="post">
+            <form method="post" asp-action="EditExercise" asp-controller="Coach" class="needs-validation">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="planId" value="@Model.PlanID" />
+                <input type="hidden" name="exerciseId" value="@Model.ExerciseID" />
 
-    <input asp-for="PlanID" type="hidden" />
-    <input asp-for="ExerciseID" type="hidden" />
-
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Exercise Selection (Read-only) -->
     <div class="mb-3">
-        <label>Exercise</label>
+                            <label class="form-label"><strong>Exercise</strong></label>
+                            <select class="form-select" disabled>
+                                @foreach (var exercise in Model.Exercises)
+                                {
+                                    <option value="@exercise.Value" 
+                                            selected="@(exercise.Value == Model.ExerciseID.ToString())">
+                                        @exercise.Text
+                                    </option>
+                                }
+        </select>
+                            <small class="form-text text-muted">Change via Add Exercise</small>
+    </div>
 
-        <select asp-for="ExerciseID"
-                asp-items="Model.Exercises"
-                class="form-select"
-                disabled>
+                        <hr />
+
+                        <!-- Workout Day -->
+    <div class="mb-3">
+                            <label for="workoutDay" class="form-label"><strong>Workout Day</strong></label>
+                            <select name="workoutDay" class="form-select" id="workoutDay" required>
+                                <option value="">-- Select Day --</option>
+                                <option value="0" selected="@(Model.WorkoutDay == DayOfWeek.Sunday)">Sunday</option>
+                                <option value="1" selected="@(Model.WorkoutDay == DayOfWeek.Monday)">Monday</option>
+                                <option value="2" selected="@(Model.WorkoutDay == DayOfWeek.Tuesday)">Tuesday</option>
+                                <option value="3" selected="@(Model.WorkoutDay == DayOfWeek.Wednesday)">Wednesday</option>
+                                <option value="4" selected="@(Model.WorkoutDay == DayOfWeek.Thursday)">Thursday</option>
+                                <option value="5" selected="@(Model.WorkoutDay == DayOfWeek.Friday)">Friday</option>
+                                <option value="6" selected="@(Model.WorkoutDay == DayOfWeek.Saturday)">Saturday</option>
         </select>
     </div>
 
-    <div class="mb-3">
-        <label>Workout Day</label>
+                        <hr />
 
-        <select asp-for="WorkoutDay"
-                asp-items="Html.GetEnumSelectList<DayOfWeek>()"
-                class="form-select">
-        </select>
+                        <!-- Sets & Reps -->
+                        <h5 class="mb-3">Workout Parameters</h5>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Sets" class="form-label"><strong>Sets</strong></label>
+                                <input asp-for="Sets" type="number" class="form-control" min="1" max="10" />
+                                <span asp-validation-for="Sets" class="text-danger"></span>
     </div>
 
-    <div class="mb-3">
-        <label>Sets</label>
-
-        <input asp-for="Sets"
-               class="form-control" />
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Reps" class="form-label"><strong>Reps</strong></label>
+                                <input asp-for="Reps" type="number" class="form-control" min="1" max="50" />
+                                <span asp-validation-for="Reps" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
     </div>
 
-    <div class="mb-3">
-        <label>Reps</label>
-
-        <input asp-for="Reps"
-               class="form-control" />
-    </div>
-
-    <button class="btn btn-primary">
-        Update
+                <!-- Buttons -->
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="bi bi-check-circle"></i> Update Exercise
     </button>
+                    <a href="@Url.Action("ManageWorkoutPlan", new { id = Model.PlanID })" class="btn btn-secondary btn-lg">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

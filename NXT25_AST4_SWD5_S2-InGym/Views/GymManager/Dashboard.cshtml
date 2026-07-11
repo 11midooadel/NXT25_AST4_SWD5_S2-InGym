@@ -1,5 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Gym Manager Dashboard";
+    var gymName = (string)ViewBag.GymName;
+    var totalCoaches = (int)ViewBag.TotalCoaches;
+    var totalMembers = (int)ViewBag.TotalMembers;
+    var activeSubscriptions = (int)ViewBag.ActiveSubscriptions;
+    var todayAttendance = (int)ViewBag.TodayAttendance;
 }
 
 <div class="container-fluid mt-4">
@@ -82,44 +87,110 @@
 
 <div class="container mt-5">
 
-    <h2 class="text-danger">
-        Welcome Gym Manager 👋
-    </h2>
-
-    <hr />
-
-    <div class="row">
-
-        <div class="col-md-4">
-            <div class="card shadow">
-                <div class="card-body text-center">
-
-                    <h4>Members</h4>
-
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase">Total Coaches</h6>
+                    <h2 class="card-text">@totalCoaches</h2>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card shadow">
-                <div class="card-body text-center">
-
-                    <h4>Coaches</h4>
-
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase">Total Members</h6>
+                    <h2 class="card-text">@totalMembers</h2>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card shadow">
-                <div class="card-body text-center">
-
-                    <h4>Reports</h4>
-
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase">Active Subscriptions</h6>
+                    <h2 class="card-text">@activeSubscriptions</h2>
                 </div>
             </div>
         </div>
 
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase">Today's Attendance</h6>
+                    <h2 class="card-text">@todayAttendance</h2>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Navigation Cards -->
+    <div class="row">
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-person-check-fill text-primary" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Manage Coaches</h5>
+                    <p class="card-text text-muted">Add, remove, or view coaches in your gym</p>
+                    <a href="@Url.Action("Coaches")" class="btn btn-primary">
+                        <i class="bi bi-arrow-right"></i> Go
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-people-fill text-success" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Manage Members</h5>
+                    <p class="card-text text-muted">View and manage gym members</p>
+                    <a href="@Url.Action("Members")" class="btn btn-success">
+                        <i class="bi bi-arrow-right"></i> Go
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-credit-card-fill text-info" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Manage Subscriptions</h5>
+                    <p class="card-text text-muted">View active subscriptions</p>
+                    <a href="@Url.Action("Subscriptions")" class="btn btn-info">
+                        <i class="bi bi-arrow-right"></i> Go
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-graph-up-arrow text-warning" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">View Reports</h5>
+                    <p class="card-text text-muted">View attendance and performance reports</p>
+                    <a href="@Url.Action("Reports")" class="btn btn-warning">
+                        <i class="bi bi-arrow-right"></i> Go
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-house-fill text-danger" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Back to Home</h5>
+                    <p class="card-text text-muted">Return to home dashboard</p>
+                    <a href="@Url.Action("Dashboard", "Home")" class="btn btn-danger">
+                        <i class="bi bi-arrow-right"></i> Go
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
