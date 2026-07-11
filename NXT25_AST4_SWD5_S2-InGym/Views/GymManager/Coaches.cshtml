@@ -1,0 +1,68 @@
+@model List<Coach>
+@{
+    ViewData["Title"] = "Manage Coaches";
+}
+
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2>Gym Coaches</h2>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="@Url.Action("AddCoach")" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Add Coach
+            </a>
+            <a href="@Url.Action("Dashboard")" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+
+    @if (Model?.Count > 0)
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Speciality</th>
+                        <th>Rating</th>
+                        <th>Members</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var coach in Model)
+                    {
+                        <tr>
+                            <td><strong>@coach.User.FirstName @coach.User.LastName</strong></td>
+                            <td>@coach.User.Email</td>
+                            <td>@coach.Speciality</td>
+                            <td>
+                                <span class="badge bg-info">@coach.Rating / 5</span>
+                            </td>
+                            <td>@coach.Members.Count()</td>
+                            <td>
+                                <form method="post" action="@Url.Action("RemoveCoach")" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="coachId" value="@coach.CoachID" />
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Remove this coach?')">
+                                        <i class="bi bi-trash"></i> Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle"></i> No coaches assigned yet.
+            <a href="@Url.Action("AddCoach")" class="alert-link">Add a coach</a>
+        </div>
+    }
+</div>

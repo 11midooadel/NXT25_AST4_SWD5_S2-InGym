@@ -1,0 +1,77 @@
+@model List<MemberGymSub>
+@{
+    ViewData["Title"] = "Active Subscriptions";
+}
+
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2>Active Gym Subscriptions</h2>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="@Url.Action("Dashboard")" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+
+    @if (Model?.Count > 0)
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Member Name</th>
+                        <th>Email</th>
+                        <th>Subscription Plan</th>
+                        <th>Price</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Days Remaining</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var sub in Model)
+                    {
+                        var daysRemaining = (sub.EndDate - DateTime.Now).Days;
+                        <tr>
+                            <td><strong>@sub.Member.User.FirstName @sub.Member.User.LastName</strong></td>
+                            <td>@sub.Member.User.Email</td>
+                            <td>@sub.GymSub.Name</td>
+                            <td>$@sub.GymSub.Price.ToString("F2")</td>
+                            <td>@sub.StartDate.ToString("dd/MM/yyyy")</td>
+                            <td>@sub.EndDate.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @if (daysRemaining > 0)
+                                {
+                                    <span class="badge bg-success">@daysRemaining days</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Expired</span>
+                                }
+                            </td>
+                            <td>
+                                @if (sub.IsActive)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactive</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle"></i> No active subscriptions yet.
+        </div>
+    }
+</div>

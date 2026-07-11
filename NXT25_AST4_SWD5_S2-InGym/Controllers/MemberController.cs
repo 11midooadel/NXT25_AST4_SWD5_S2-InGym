@@ -135,5 +135,71 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
 
             return RedirectToAction("ChooseSubscription", "Subscription");
         }
+
+        // ================= Edit Profile =================
+
+        [HttpGet]
+        public IActionResult EditProfile()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var member = _context.Members
+                .Include(m => m.User)
+                .FirstOrDefault(m => m.UserID == userId);
+
+            if (member == null)
+                return RedirectToAction("CompleteProfile");
+
+            return View(member);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditProfile(Member model)
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var member = _context.Members
+                .FirstOrDefault(m => m.UserID == userId);
+
+            if (member == null)
+                return RedirectToAction("CompleteProfile");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            member.BirthDate = model.BirthDate;
+            member.Gender = model.Gender;
+            member.Height = model.Height;
+            member.Weight = model.Weight;
+            member.Goals = model.Goals;
+            member.PhysRestrictions = model.PhysRestrictions;
+            member.ChronicDiseases = model.ChronicDiseases;
+
+            _context.SaveChanges();
+
+            TempData["Success"] = "Profile updated successfully.";
+
+            return RedirectToAction("Dashboard", "Home");
+        }
+
+        // ================= View Profile =================
+
+        [HttpGet]
+        public IActionResult ViewProfile()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var member = _context.Members
+                .Include(m => m.User)
+                .Include(m => m.Coach)
+                .ThenInclude(c => c.User)
+                .FirstOrDefault(m => m.UserID == userId);
+
+            if (member == null)
+                return RedirectToAction("CompleteProfile");
+
+            return View(member);
+        }
     }
 }

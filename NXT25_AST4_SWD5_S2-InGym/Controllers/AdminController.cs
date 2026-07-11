@@ -266,5 +266,453 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
 
             return View(coaches);
         }
+
+        // ================= View Members =================
+
+        public IActionResult Members()
+        {
+            var members = _context.Members
+                .Include(m => m.User)
+                .Include(m => m.Coach)
+                .ThenInclude(c => c.User)
+                .ToList();
+
+            return View(members);
+        }
+
+        // ================= View Member Details =================
+
+        [HttpGet]
+        public IActionResult MemberDetails(int id)
+        {
+            var member = _context.Members
+                .Include(m => m.User)
+                .Include(m => m.Coach)
+                .ThenInclude(c => c.User)
+                .FirstOrDefault(m => m.MemberID == id);
+
+            if (member == null)
+                return NotFound();
+
+            return View(member);
+        }
+
+        // ================= Edit Member =================
+
+        [HttpGet]
+        public IActionResult EditMember(int id)
+        {
+            var member = _context.Members
+                .Include(m => m.User)
+                .FirstOrDefault(m => m.MemberID == id);
+
+            if (member == null)
+                return NotFound();
+
+            return View(member);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditMember(int id, Member model)
+        {
+            var member = _context.Members
+                .Include(m => m.User)
+                .FirstOrDefault(m => m.MemberID == id);
+
+            if (member == null)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            member.BirthDate = model.BirthDate;
+            member.Gender = model.Gender;
+            member.Height = model.Height;
+            member.Weight = model.Weight;
+            member.Goals = model.Goals;
+            member.PhysRestrictions = model.PhysRestrictions;
+            member.ChronicDiseases = model.ChronicDiseases;
+            member.IsActive = model.IsActive;
+
+            _context.SaveChanges();
+
+            TempData["Success"] = "Member updated successfully.";
+
+            return RedirectToAction(nameof(Members));
+        }
+
+        // ================= Deactivate Member =================
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeactivateMember(int id)
+        {
+            var member = _context.Members.FirstOrDefault(m => m.MemberID == id);
+
+            if (member == null)
+                return NotFound();
+
+            member.IsActive = false;
+            _context.SaveChanges();
+
+            TempData["Success"] = "Member deactivated successfully.";
+
+            return RedirectToAction(nameof(Members));
+        }
+
+        // ================= Edit Gym =================
+
+        [HttpGet]
+        public IActionResult EditGym(int id)
+        {
+            var gym = _context.Gyms
+                .Include(g => g.GymLocations)
+                .FirstOrDefault(g => g.GymID == id);
+
+            if (gym == null)
+                return NotFound();
+
+            return View(gym);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditGym(int id, Gym model)
+        {
+            var gym = _context.Gyms
+                .Include(g => g.GymLocations)
+                .FirstOrDefault(g => g.GymID == id);
+
+            if (gym == null)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            gym.GymName = model.GymName;
+
+            _context.SaveChanges();
+
+            TempData["Success"] = "Gym updated successfully.";
+
+            return RedirectToAction(nameof(Gyms));
+        }
+
+        // ================= Delete Gym =================
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteGym(int id)
+        {
+            var gym = _context.Gyms.FirstOrDefault(g => g.GymID == id);
+
+            if (gym == null)
+                return NotFound();
+
+            // Delete all related data
+            var locations = _context.GymLocations.Where(gl => gl.GymID == id);
+            _context.GymLocations.RemoveRange(locations);
+
+            var managers = _context.GymManagers.Where(gm => gm.GymID == id);
+            _context.GymManagers.RemoveRange(managers);
+
+            var gymCoaches = _context.GymCoaches.Where(gc => gc.GymID == id);
+            _context.GymCoaches.RemoveRange(gymCoaches);
+
+            var gymMembers = _context.GymMembers.Where(gm => gm.GymID == id);
+            _context.GymMembers.RemoveRange(gymMembers);
+
+            var subscriptions = _context.MemberGymSubs.Where(mgs => mgs.GymID == id);
+            _context.MemberGymSubs.RemoveRange(subscriptions);
+
+            _context.Gyms.Remove(gym);
+            _context.SaveChanges();
+
+            TempData["Success"] = "Gym deleted successfully.";
+
+            return RedirectToAction(nameof(Gyms));
+        }
+
+        // ================= Manage Subscriptions =================
+
+        public IActionResult Subscriptions()
+        {
+            var gymSubs = _context.GymSubs.ToList();
+            var privateSubs = _context.PrivateSubs.ToList();
+
+            ViewBag.GymSubs = gymSubs;
+            ViewBag.PrivateSubs = privateSubs;
+
+            return View();
+        }
+
+        // ================= Add Gym Subscription =================
+
+        [HttpGet]
+        public IActionResult AddGymSubscription()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddGymSubscription(GymSub model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            GymSub sub = new GymSub
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Price = model.Price,
+                DurationMonths = model.DurationMonths
+            };
+
+            _context.GymSubs.Add(sub);
+            _context.SaveChanges();
+
+            TempData["Success"] = "Gym Subscription added successfully.";
+
+            return RedirectToAction(nameof(Subscriptions));
+        }
+
+        // ================= Edit Gym Subscription =================
+
+        [HttpGet]
+        public IActionResult EditGymSubscription(int id)
+        {
+            var sub = _context.GymSubs.FirstOrDefault(g => g.GymSubID == id);
+
+            if (sub == null)
+                return NotFound();
+
+            return View(sub);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditGymSubscription(int id, GymSub model)
+        {
+            var sub = _context.GymSubs.FirstOrDefault(g => g.GymSubID == id);
+
+            if (sub == null)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            sub.Name = model.Name;
+            sub.Description = model.Description;
+            sub.Price = model.Price;
+            sub.DurationMonths = model.DurationMonths;
+
+            _context.SaveChanges();
+
+            TempData["Success"] = "Gym Subscription updated successfully.";
+
+            return RedirectToAction(nameof(Subscriptions));
+        }
+
+        // ================= Delete Gym Subscription =================
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteGymSubscription(int id)
+        {
+            var sub = _context.GymSubs.FirstOrDefault(g => g.GymSubID == id);
+
+            if (sub == null)
+                return NotFound();
+
+            _context.GymSubs.Remove(sub);
+            _context.SaveChanges();
+
+            TempData["Success"] = "Gym Subscription deleted successfully.";
+
+            return RedirectToAction(nameof(Subscriptions));
+        }
+
+        // ================= Add Private Subscription =================
+
+        [HttpGet]
+        public IActionResult AddPrivateSubscription()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddPrivateSubscription(PrivateSub model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            PrivateSub sub = new PrivateSub
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Price = model.Price,
+                DurationMonths = model.DurationMonths
+            };
+
+            _context.PrivateSubs.Add(sub);
+            _context.SaveChanges();
+
+            TempData["Success"] = "Private Subscription added successfully.";
+
+            return RedirectToAction(nameof(Subscriptions));
+        }
+
+        // ================= Edit Private Subscription =================
+
+        [HttpGet]
+        public IActionResult EditPrivateSubscription(int id)
+        {
+            var sub = _context.PrivateSubs.FirstOrDefault(p => p.PrivateSubID == id);
+
+            if (sub == null)
+                return NotFound();
+
+            return View(sub);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditPrivateSubscription(int id, PrivateSub model)
+        {
+            var sub = _context.PrivateSubs.FirstOrDefault(p => p.PrivateSubID == id);
+
+            if (sub == null)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            sub.Name = model.Name;
+            sub.Description = model.Description;
+            sub.Price = model.Price;
+            sub.DurationMonths = model.DurationMonths;
+
+            _context.SaveChanges();
+
+            TempData["Success"] = "Private Subscription updated successfully.";
+
+            return RedirectToAction(nameof(Subscriptions));
+        }
+
+        // ================= Delete Private Subscription =================
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeletePrivateSubscription(int id)
+        {
+            var sub = _context.PrivateSubs.FirstOrDefault(p => p.PrivateSubID == id);
+
+            if (sub == null)
+                return NotFound();
+
+            _context.PrivateSubs.Remove(sub);
+            _context.SaveChanges();
+
+            TempData["Success"] = "Private Subscription deleted successfully.";
+
+            return RedirectToAction(nameof(Subscriptions));
+        }
+
+        // ================= Manage Exercises =================
+
+        public IActionResult Exercises()
+        {
+            var exercises = _context.Exercises.ToList();
+
+            return View(exercises);
+        }
+
+        // ================= Add Exercise =================
+
+        [HttpGet]
+        public IActionResult AddExercise()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddExercise(Exercise model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            Exercise exercise = new Exercise
+            {
+                ExerciseName = model.ExerciseName,
+                Description = model.Description,
+                MuscleGroup = model.MuscleGroup
+            };
+
+            _context.Exercises.Add(exercise);
+            _context.SaveChanges();
+
+            TempData["Success"] = "Exercise added successfully.";
+
+            return RedirectToAction(nameof(Exercises));
+        }
+
+        // ================= Edit Exercise =================
+
+        [HttpGet]
+        public IActionResult EditExercise(int id)
+        {
+            var exercise = _context.Exercises.FirstOrDefault(e => e.ExerciseID == id);
+
+            if (exercise == null)
+                return NotFound();
+
+            return View(exercise);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditExercise(int id, Exercise model)
+        {
+            var exercise = _context.Exercises.FirstOrDefault(e => e.ExerciseID == id);
+
+            if (exercise == null)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            exercise.ExerciseName = model.ExerciseName;
+            exercise.Description = model.Description;
+            exercise.MuscleGroup = model.MuscleGroup;
+
+            _context.SaveChanges();
+
+            TempData["Success"] = "Exercise updated successfully.";
+
+            return RedirectToAction(nameof(Exercises));
+        }
+
+        // ================= Delete Exercise =================
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteExercise(int id)
+        {
+            var exercise = _context.Exercises.FirstOrDefault(e => e.ExerciseID == id);
+
+            if (exercise == null)
+                return NotFound();
+
+            _context.Exercises.Remove(exercise);
+            _context.SaveChanges();
+
+            TempData["Success"] = "Exercise deleted successfully.";
+
+            return RedirectToAction(nameof(Exercises));
+        }
     }
 }
