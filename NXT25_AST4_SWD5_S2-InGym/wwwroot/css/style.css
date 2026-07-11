@@ -74,6 +74,10 @@ a {
         background: var(--bg-card-hover);
     }
 
+main {
+    padding-top: 80px; /* To offset the fixed landing nav */
+}
+
 /* Landing Nav */
 .landing-nav {
     position: fixed;
@@ -170,10 +174,11 @@ a {
 
 /* Hero Section */
 .hero-section {
-    min-height: 100vh;
+    min-height: calc(100vh - 80px);
     display: flex;
     align-items: center;
-    padding: 120px 5% 60px;
+    padding: 40px 5% 60px;
+    box-sizing: border-box;
     background: radial-gradient(circle at 80% 20%, rgba(255, 71, 87, 0.12) 0%, transparent 50%), var(--bg-dark);
 }
 
