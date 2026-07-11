@@ -266,5 +266,163 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
 
             return View(coaches);
         }
+
+        // ================= Exercise Management =================
+
+        public IActionResult Exercises()
+        {
+            var exercises = _context.Exercises.ToList();
+            return View(exercises);
+        }
+
+        [HttpGet]
+        public IActionResult AddExercise()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddExercise(Exercise model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            _context.Exercises.Add(model);
+            _context.SaveChanges();
+
+            TempData["Success"] = "Exercise added successfully.";
+            return RedirectToAction(nameof(Exercises));
+        }
+
+        [HttpGet]
+        public IActionResult EditExercise(int id)
+        {
+            var exercise = _context.Exercises.FirstOrDefault(e => e.ExerciseID == id);
+            if (exercise == null)
+                return NotFound();
+
+            return View(exercise);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditExercise(Exercise model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var exercise = _context.Exercises.FirstOrDefault(e => e.ExerciseID == model.ExerciseID);
+            if (exercise == null)
+                return NotFound();
+
+            exercise.ExerciseName = model.ExerciseName;
+            exercise.Description = model.Description;
+            exercise.MuscleGroup = model.MuscleGroup;
+
+            _context.SaveChanges();
+
+            TempData["Success"] = "Exercise updated successfully.";
+            return RedirectToAction(nameof(Exercises));
+        }
+
+        [HttpPost]
+        public IActionResult DeleteExercise(int id)
+        {
+            var exercise = _context.Exercises.FirstOrDefault(e => e.ExerciseID == id);
+            if (exercise == null)
+                return NotFound();
+
+            _context.Exercises.Remove(exercise);
+            _context.SaveChanges();
+
+            TempData["Success"] = "Exercise deleted successfully.";
+            return RedirectToAction(nameof(Exercises));
+        }
+
+        // ================= Reports =================
+
+        public IActionResult Reports()
+        {
+            var stats = new
+            {
+                TotalGyms = _context.Gyms.Count(),
+                TotalMembers = _context.Members.Count(),
+                TotalCoaches = _context.Coaches.Count(),
+                TotalManagers = _context.GymManagers.Count(),
+                ActiveSubscriptions = _context.MemberGymSubs.Count(x => x.IsActive),
+                TotalAttendance = _context.Attendances.Count(),
+                TotalExercises = _context.Exercises.Count()
+            };
+
+            ViewBag.Stats = stats;
+            return View();
+        }
+
+        public IActionResult MemberReport()
+        {
+            var members = _context.Members
+                .Include(m => m.User)
+                .Include(m => m.Coach)
+                .ThenInclude(c => c.User)
+                .ToList();
+
+            return View(members);
+        }
+
+        public IActionResult SubscriptionReport()
+        {
+            var subscriptions = _context.MemberGymSubs
+                .Include(mgs => mgs.Member)
+                .ThenInclude(m => m.User)
+                .Include(mgs => mgs.GymSub)
+                .OrderByDescending(mgs => mgs.StartDate)
+                .ToList();
+
+            return View(subscriptions);
+        }
+
+        public IActionResult AttendanceReport(int? gymId = null, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            var query = _context.Attendances
+                .Include(a => a.Member)
+                .ThenInclude(m => m.User)
+                .AsQueryable();
+
+            if (startDate.HasValue)
+                query = query.Where(a => a.CheckInTime >= startDate.Value);
+
+            if (endDate.HasValue)
+                query = query.Where(a => a.CheckInTime <= endDate.Value);
+
+            var attendances = query.OrderByDescending(a => a.CheckInTime).ToList();
+
+            ViewBag.StartDate = startDate;
+            ViewBag.EndDate = endDate;
+            ViewBag.Gyms = _context.Gyms.ToList();
+
+            return View(attendances);
+        }
+
+        public IActionResult SystemHealthReport()
+        {
+            var stats = new
+            {
+                TotalUsers = _context.Users.Count(),
+                TotalGyms = _context.Gyms.Count(),
+                TotalMembers = _context.Members.Count(),
+                TotalCoaches = _context.Coaches.Count(),
+                ActiveMembers = _context.Members.Count(m => m.IsActive),
+                InactiveMembers = _context.Members.Count(m => !m.IsActive),
+                ActiveSubscriptions = _context.MemberGymSubs.Count(x => x.IsActive),
+                ExpiredSubscriptions = _context.MemberGymSubs.Count(x => !x.IsActive),
+                AverageAttendancePerMember = _context.Members.Count() > 0 
+                    ? Math.Round((double)_context.Attendances.Count() / _context.Members.Count(), 2)
+                    : 0
+            };
+
+            ViewBag.Stats = stats;
+            return View();
+        }
     }
 }

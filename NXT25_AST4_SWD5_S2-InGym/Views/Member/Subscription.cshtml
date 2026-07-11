@@ -1,0 +1,53 @@
+@{
+	ViewData["Title"] = "My Subscription";
+}
+
+<div class="container mt-4">
+	<div class="row">
+		<div class="col-md-8 offset-md-2">
+			<div class="d-flex justify-content-between align-items-center mb-4">
+				<h2>My Subscription</h2>
+				<a href="@Url.Action("Dashboard", "Home")" class="btn btn-secondary">
+					<i class="fas fa-arrow-left"></i> Back
+				</a>
+			</div>
+
+			<div class="alert alert-info" role="alert">
+				<i class="fas fa-info-circle"></i> View and manage your current gym subscription below.
+			</div>
+
+			<div class="card">
+				<div class="card-header bg-primary text-white">
+					<h5 class="mb-0">Active Subscription Details</h5>
+				</div>
+				<div class="card-body">
+					<p class="text-muted">To view your subscription details, please visit your <a href="@Url.Action("Dashboard", "Home")">dashboard</a>.</p>
+					<p>Your subscription information is displayed in the "Gym & Subscription" section including:</p>
+					<ul>
+						<li>Gym Name and Location</li>
+						<li>Subscription Price</li>
+						<li>Duration and Dates</li>
+						<li>Days Remaining</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="card mt-3">
+				<div class="card-header bg-warning text-dark">
+					<h5 class="mb-0">Want to Change Subscription?</h5>
+				</div>
+				<div class="card-body">
+					<p>You can:</p>
+					<ul>
+						<li>Renew your current subscription when it expires</li>
+						<li>Contact support to upgrade or downgrade</li>
+						<li>Choose a different gym subscription</li>
+					</ul>
+					<a href="@Url.Action("ChooseSubscription", "Subscription")" class="btn btn-primary">
+						<i class="fas fa-ticket-alt"></i> View Available Subscriptions
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

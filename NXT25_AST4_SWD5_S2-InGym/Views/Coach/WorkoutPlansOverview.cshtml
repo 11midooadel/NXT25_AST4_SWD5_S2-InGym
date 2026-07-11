@@ -1,0 +1,53 @@
+@model IEnumerable<NXT25_AST4_SWD5_S2_InGym.Models.Member>
+
+@{
+	ViewData["Title"] = "Workout Plans";
+}
+
+<div class="container mt-4">
+	<div class="row mb-4">
+		<div class="col-md-6">
+			<h2>Members Workout Plans</h2>
+		</div>
+		<div class="col-md-6 text-end">
+			<a asp-action="Members" class="btn btn-secondary">
+				<i class="fas fa-arrow-left"></i> Back to Members
+			</a>
+		</div>
+	</div>
+
+	@if (!Model.Any())
+	{
+		<div class="alert alert-info">
+			<i class="fas fa-info-circle"></i> No members assigned to you yet.
+		</div>
+	}
+	else
+	{
+		<div class="row">
+			@foreach (var member in Model)
+			{
+				<div class="col-md-6 col-lg-4 mb-3">
+					<div class="card shadow-sm h-100">
+						<div class="card-body">
+							<h5 class="card-title">
+								@member.User.FirstName @member.User.LastName
+							</h5>
+							<p class="card-text text-muted small">
+								@member.User.Email
+							</p>
+							<div class="d-grid gap-2">
+								<a asp-action="WorkoutPlans" asp-route-memberId="@member.MemberID" class="btn btn-primary btn-sm">
+									<i class="fas fa-dumbbell"></i> View Plans
+								</a>
+								<a asp-action="CreateWorkoutPlan" asp-route-memberId="@member.MemberID" class="btn btn-success btn-sm">
+									<i class="fas fa-plus"></i> Create Plan
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	}
+</div>

@@ -125,17 +125,59 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
             return View(member);
         }
         [Authorize(Roles = "Coach")]
-        public IActionResult WorkoutPlans(int memberId)
+        public IActionResult WorkoutPlans(int? memberId = null)
         {
-            ViewBag.MemberID = memberId;
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-            var plans = _context.MemberWorkoutPlans
-                .Where(x => x.MemberID == memberId)
-                .Include(x => x.WorkoutPlan)
-                .Select(x => x.WorkoutPlan)
+            var coach = _context.Coaches
+                .FirstOrDefault(c => c.UserID == userId);
+
+            if (coach == null)
+                return RedirectToAction("Dashboard");
+
+            if (memberId.HasValue)
+            {
+                // Show plans for specific member
+                ViewBag.MemberID = memberId;
+                var plans = _context.MemberWorkoutPlans
+                    .Where(x => x.MemberID == memberId)
+                    .Include(x => x.WorkoutPlan)
+                    .Select(x => x.WorkoutPlan)
+                    .ToList();
+
+                return View(plans);
+            }
+            else
+            {
+                // Show all members and their workout plans
+                var allMembers = _context.Members
+                    .Where(m => m.CoachID == coach.CoachID)
+                    .Include(m => m.User)
+                    .ToList();
+
+                return View("WorkoutPlansOverview", allMembers);
+            }
+        }
+        // ================= Coach : Diet Plans Overview =================
+
+        [Authorize(Roles = "Coach")]
+        public IActionResult DietPlans()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var coach = _context.Coaches
+                .FirstOrDefault(c => c.UserID == userId);
+
+            if (coach == null)
+                return RedirectToAction("Dashboard");
+
+            // Show all members so coach can select one to create/view diet plans
+            var allMembers = _context.Members
+                .Where(m => m.CoachID == coach.CoachID)
+                .Include(m => m.User)
                 .ToList();
 
-            return View(plans);
+            return View("DietPlansOverview", allMembers);
         }
         // ================= Create Workout Plan =================
 
@@ -175,6 +217,11 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
 
                 return View(model);
             }
+            return Content(
+    $"MemberID = {model.MemberID}\n" +
+    $"Goal = {model.Goal}\n" +
+    $"Exercises Count = {model.SelectedExercises.Count}"
+);
 
             WorkoutPlan plan = new WorkoutPlan
             {

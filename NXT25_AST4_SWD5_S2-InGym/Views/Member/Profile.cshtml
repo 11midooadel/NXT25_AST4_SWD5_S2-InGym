@@ -1,0 +1,60 @@
+@{
+	ViewData["Title"] = "My Profile";
+}
+
+<div class="container mt-4">
+	<div class="row">
+		<div class="col-md-8 offset-md-2">
+			<div class="d-flex justify-content-between align-items-center mb-4">
+				<h2>My Profile</h2>
+				<a href="@Url.Action("Dashboard", "Home")" class="btn btn-secondary">
+					<i class="fas fa-arrow-left"></i> Back
+				</a>
+			</div>
+
+			<div class="alert alert-info" role="alert">
+				<i class="fas fa-info-circle"></i> This is your member profile. Visit the dashboard for a complete overview of your account and activities.
+			</div>
+
+			<div class="card">
+				<div class="card-header bg-primary text-white">
+					<h5 class="mb-0">Profile Information</h5>
+				</div>
+				<div class="card-body">
+					<p><strong>Personal Information:</strong></p>
+					<ul class="list-unstyled">
+						<li>Full Name: Check your account settings to update</li>
+						<li>Email: Check your account settings to update</li>
+						<li>Member ID: Check dashboard</li>
+						<li>Status: Active or Inactive</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="card mt-3">
+				<div class="card-header bg-success text-white">
+					<h5 class="mb-0">Quick Links</h5>
+				</div>
+				<div class="card-body">
+					<div class="list-group">
+						<a href="@Url.Action("Dashboard", "Home")" class="list-group-item list-group-item-action">
+							<i class="fas fa-chart-line"></i> View Dashboard
+						</a>
+						<a href="@Url.Action("MyMetrics", "HealthMetric")" class="list-group-item list-group-item-action">
+							<i class="fas fa-heartbeat"></i> Health Metrics
+						</a>
+						<a href="@Url.Action("MyDietPlans", "DietPlan")" class="list-group-item list-group-item-action">
+							<i class="fas fa-utensils"></i> My Diet Plans
+						</a>
+						<a href="@Url.Action("Index", "Workout")" class="list-group-item list-group-item-action">
+							<i class="fas fa-dumbbell"></i> My Workouts
+						</a>
+						<a href="@Url.Action("Index", "Attendance")" class="list-group-item list-group-item-action">
+							<i class="fas fa-calendar-check"></i> Check In/Out
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

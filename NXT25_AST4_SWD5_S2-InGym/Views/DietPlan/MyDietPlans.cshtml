@@ -1,0 +1,62 @@
+@model List<NXT25_AST4_SWD5_S2_InGym.ViewModels.Coach.DietPlanViewModel>
+
+@{
+	ViewData["Title"] = "My Diet Plans";
+}
+
+<div class="container mt-4">
+	<div class="row">
+		<div class="col-md-10 offset-md-1">
+			<div class="d-flex justify-content-between align-items-center mb-4">
+				<div>
+					<h2>My Diet Plans</h2>
+					<p class="text-muted">Nutrition guidance from your coach</p>
+				</div>
+				<a href="@Url.Action("Dashboard", "Home")" class="btn btn-secondary">
+					<i class="fas fa-arrow-left"></i> Back
+				</a>
+			</div>
+
+			@if (Model.Any())
+			{
+				<div class="row">
+					@foreach (var plan in Model)
+					{
+						<div class="col-md-6 mb-3">
+							<div class="card h-100 border-info">
+								<div class="card-body">
+									<h5 class="card-title">
+										<i class="fas fa-utensils text-info"></i> Diet Plan
+									</h5>
+									<p class="card-text">
+										<strong>Daily Calories:</strong> @plan.CalorieTarget kcal<br />
+										<strong>Daily Protein:</strong> @plan.ProteinTarget g<br />
+										<strong>Created:</strong> @plan.FormattedDate
+									</p>
+									@if (!string.IsNullOrEmpty(plan.Notes))
+									{
+										<div class="alert alert-light" role="alert">
+											<strong>Coach's Notes:</strong> @plan.Notes
+										</div>
+									}
+								</div>
+							</div>
+						</div>
+					}
+				</div>
+
+				<div class="mt-4">
+					<div class="alert alert-info" role="alert">
+						<i class="fas fa-info-circle"></i> Follow these nutrition guidelines for best results. Contact your coach if you have questions about your diet plan.
+					</div>
+				</div>
+			}
+			else
+			{
+				<div class="alert alert-info" role="alert">
+					<i class="fas fa-info-circle"></i> No diet plans assigned yet. Your coach will create one for you soon!
+				</div>
+			}
+		</div>
+	</div>
+</div>

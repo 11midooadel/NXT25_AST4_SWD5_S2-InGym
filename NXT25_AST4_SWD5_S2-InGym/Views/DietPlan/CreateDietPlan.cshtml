@@ -1,0 +1,53 @@
+@model NXT25_AST4_SWD5_S2_InGym.ViewModels.Coach.CreateDietPlanViewModel
+
+@{
+	ViewData["Title"] = "Create Diet Plan";
+}
+
+<div class="container mt-4">
+	<div class="row">
+		<div class="col-md-8 offset-md-2">
+			<h2 class="mb-4">Create Diet Plan</h2>
+			<p class="text-muted">Member: <strong>@Model.MemberName</strong></p>
+
+			<form asp-action="CreateDietPlan" method="post" class="needs-validation">
+				<input asp-for="MemberId" type="hidden" />
+
+				<div class="mb-3">
+					<label asp-for="CalorieTarget" class="form-label">Calorie Target (kcal)</label>
+					<input asp-for="CalorieTarget" type="number" class="form-control" placeholder="e.g., 2000" />
+					<span asp-validation-for="CalorieTarget" class="text-danger small"></span>
+					<small class="form-text text-muted">Daily calorie goal</small>
+				</div>
+
+				<div class="mb-3">
+					<label asp-for="ProteinTarget" class="form-label">Protein Target (grams)</label>
+					<input asp-for="ProteinTarget" type="number" class="form-control" placeholder="e.g., 150" />
+					<span asp-validation-for="ProteinTarget" class="text-danger small"></span>
+					<small class="form-text text-muted">Daily protein goal in grams</small>
+				</div>
+
+				<div class="mb-3">
+					<label asp-for="Notes" class="form-label">Notes</label>
+					<textarea asp-for="Notes" class="form-control" rows="4" placeholder="Add any special dietary notes or restrictions"></textarea>
+					<small class="form-text text-muted">Optional</small>
+				</div>
+
+				<div class="d-flex gap-2">
+					<button type="submit" class="btn btn-primary">
+						<i class="fas fa-save"></i> Create Diet Plan
+					</button>
+					<a href="javascript:history.back()" class="btn btn-secondary">
+						<i class="fas fa-arrow-left"></i> Cancel
+					</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
