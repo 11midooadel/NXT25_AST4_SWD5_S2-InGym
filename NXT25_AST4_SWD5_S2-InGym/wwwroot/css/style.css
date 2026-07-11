@@ -1,27 +1,27 @@
-﻿/* InGym Premium CSS Design System */
+﻿/* InGym Premium CSS Design System - Light Theme */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap');
 
 :root {
-    /* Color Tokens - Base */
-    --bg-dark: #0a0c10;
-    --bg-deep: #0f121d;
-    --bg-card: rgba(22, 28, 45, 0.65);
-    --bg-card-hover: rgba(30, 39, 61, 0.85);
-    --border-color: rgba(255, 255, 255, 0.08);
-    --border-color-hover: rgba(255, 255, 255, 0.15);
-    --text-primary: #f3f4f6;
-    --text-secondary: #9ca3af;
-    --text-muted: #6b7280;
+    /* Simplified Color Tokens - Light Base */
+    --bg-base: #f8fafc;
+    --bg-surface: rgba(255, 255, 255, 0.75);
+    --bg-surface-hover: rgba(255, 255, 255, 0.95);
+    --bg-overlay: rgba(255, 255, 255, 0.85);
+    /* Text Colors */
+    --text-main: #0f172a;
+    --text-soft: #475569;
+    --text-inverse: #ffffff; /* For buttons and image overlays */
+    /* Borders */
+    --border-light: rgba(0, 0, 0, 0.08);
+    --border-strong: rgba(0, 0, 0, 0.15);
     /* Theme Accents */
     --accent-brand: #ff4757;
     --gradient-brand: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
-    --accent-member: #00f2fe;
     --gradient-member: linear-gradient(135deg, #00c6ff 0%, #00f2fe 100%);
-    --accent-coach: #f0932b;
     --gradient-coach: linear-gradient(135deg, #ff7979 0%, #f0932b 100%);
-    --accent-manager: #2ecc71;
     --gradient-manager: linear-gradient(135deg, #10ac84 0%, #2ecc71 100%);
-    --shadow-premium: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    /* Effects & Geometry */
+    --shadow-premium: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
     --shadow-accent-glow: 0 0 15px rgba(255, 71, 87, 0.3);
     --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     --border-radius-lg: 16px;
@@ -40,8 +40,8 @@ html {
 }
 
 body {
-    background-color: var(--bg-dark);
-    color: var(--text-primary);
+    background-color: var(--bg-base);
+    color: var(--text-main);
     font-family: 'Inter', sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
@@ -50,7 +50,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', sans-serif;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--text-main);
 }
 
 a {
@@ -60,18 +60,18 @@ a {
 }
 
 .glass-panel {
-    background: var(--bg-card);
+    background: var(--bg-surface);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-light);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-premium);
     transition: var(--transition-smooth);
 }
 
     .glass-panel:hover {
-        border-color: var(--border-color-hover);
-        background: var(--bg-card-hover);
+        border-color: var(--border-strong);
+        background: var(--bg-surface-hover);
     }
 
 main {
@@ -90,9 +90,9 @@ main {
     align-items: center;
     padding: 0 5%;
     z-index: 1000;
-    background: rgba(10, 12, 16, 0.8);
+    background: var(--bg-overlay);
     backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-light);
 }
 
 .brand-logo {
@@ -101,7 +101,7 @@ main {
     gap: 10px;
     font-size: 1.5rem;
     font-weight: 800;
-    color: #ffffff;
+    color: var(--text-main);
 }
 
     .brand-logo i {
@@ -120,18 +120,18 @@ main {
 
     .nav-links a {
         font-weight: 500;
-        color: var(--text-secondary);
+        color: var(--text-soft);
     }
 
         .nav-links a:hover, .nav-links a.active {
-            color: #ffffff;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+            color: var(--text-main);
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
         }
 
 /* Buttons */
 .btn-primary {
     background: var(--gradient-brand);
-    color: #ffffff;
+    color: var(--text-inverse);
     border: none;
     padding: 12px 28px;
     border-radius: var(--border-radius-md);
@@ -148,16 +148,16 @@ main {
     .btn-primary:hover {
         transform: translateY(-2px);
         box-shadow: 0 0 25px rgba(255, 71, 87, 0.5);
-        color: #ffffff;
+        color: var(--text-inverse);
     }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid var(--border-color);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-strong);
     padding: 12px 28px;
     border-radius: var(--border-radius-md);
     font-weight: 600;
-    color: #ffffff;
+    color: var(--text-main);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -167,9 +167,9 @@ main {
 }
 
     .btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.15);
+        background: var(--border-light);
         transform: translateY(-2px);
-        color: #ffffff;
+        color: var(--text-main);
     }
 
 /* Hero Section */
@@ -179,7 +179,7 @@ main {
     align-items: center;
     padding: 40px 5% 60px;
     box-sizing: border-box;
-    background: radial-gradient(circle at 80% 20%, rgba(255, 71, 87, 0.12) 0%, transparent 50%), var(--bg-dark);
+    background: radial-gradient(circle at 80% 20%, rgba(255, 71, 87, 0.05) 0%, transparent 50%), var(--bg-base);
 }
 
 .hero-grid {
@@ -204,7 +204,7 @@ main {
 
 .hero-subtitle {
     font-size: 1.2rem;
-    color: var(--text-secondary);
+    color: var(--text-soft);
     margin-bottom: 36px;
     max-width: 600px;
 }
@@ -222,11 +222,11 @@ main {
 
 .stat-item h3 {
     font-size: 2.2rem;
-    color: #ffffff;
+    color: var(--text-main);
 }
 
 .stat-item p {
-    color: var(--text-secondary);
+    color: var(--text-soft);
     font-size: 0.9rem;
 }
 
@@ -247,7 +247,7 @@ section {
     }
 
     .section-header p {
-        color: var(--text-secondary);
+        color: var(--text-soft);
     }
 
 /* Project Overview */
@@ -276,7 +276,7 @@ section {
     }
 
     .overview-card p {
-        color: var(--text-secondary);
+        color: var(--text-soft);
         font-size: 0.95rem;
     }
 
@@ -309,7 +309,7 @@ section {
     }
 
     .feature-card p {
-        color: var(--text-secondary);
+        color: var(--text-soft);
         font-size: 0.9rem;
     }
 
@@ -325,7 +325,7 @@ section {
     overflow: hidden;
     border-radius: var(--border-radius-lg);
     aspect-ratio: 4/3;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-light);
 }
 
     .gallery-item img {
@@ -338,7 +338,7 @@ section {
 .gallery-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(10, 12, 16, 0.9), transparent);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -357,12 +357,12 @@ section {
 
 .gallery-overlay h4 {
     font-size: 1.2rem;
-    color: #ffffff;
+    color: var(--text-inverse);
 }
 
 .gallery-overlay p {
     font-size: 0.85rem;
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 /* Forms & Footer */
@@ -384,25 +384,25 @@ section {
         display: block;
         font-size: 0.9rem;
         font-weight: 500;
-        color: var(--text-secondary);
+        color: var(--text-soft);
         margin-bottom: 8px;
     }
 
 .form-control {
     width: 100%;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-color);
+    background: var(--bg-base);
+    border: 1px solid var(--border-strong);
     border-radius: var(--border-radius-md);
     padding: 12px 16px;
-    color: #ffffff;
+    color: var(--text-main);
     transition: var(--transition-smooth);
 }
 
     .form-control:focus {
         outline: none;
         border-color: var(--accent-brand);
-        background: rgba(255, 255, 255, 0.09);
-        box-shadow: 0 0 10px rgba(255, 71, 87, 0.2);
+        background: var(--bg-surface);
+        box-shadow: 0 0 10px rgba(255, 71, 87, 0.1);
     }
 
 textarea.form-control {
@@ -432,10 +432,11 @@ textarea.form-control {
 .info-text h5 {
     font-size: 1.1rem;
     margin-bottom: 4px;
+    color: var(--text-main);
 }
 
 .info-text p {
-    color: var(--text-secondary);
+    color: var(--text-soft);
     font-size: 0.9rem;
 }
 
