@@ -3,22 +3,29 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - NXT25_AST4_SWD5_S2_InGym</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - InGym</title>
+    
+    <!-- External Fonts and Icons for Premium Design -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Bootstrap CSS (Kept for fallback, but main styling is driven by style.css) -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/NXT25_AST4_SWD5_S2_InGym.styles.css" asp-append-version="true" />
 </head>
 <body>
     <partial name="_Navbar" />
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    
+    <!-- Removed .container class here to allow full-width glassmorphism sections -->
+    <main role="main">
+        @RenderBody()
+    </main>
 
     <partial name="_Footer" />
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
