@@ -25,7 +25,6 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-            // لو العضو كمل البروفايل قبل كده
             if (_context.Members.Any(m => m.UserID == userId))
             {
                 return RedirectToAction("ChooseGym");
@@ -75,13 +74,40 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
         }
 
         // ================= Choose Gym =================
+
+        [HttpGet]
+        public IActionResult ChooseGym()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            Member? member = _context.Members
+                                     .FirstOrDefault(m => m.UserID == userId);
+
+            if (member != null)
+            {
+                bool joined = _context.GymMembers
+                                      .Any(g => g.MemberID == member.MemberID);
+
+                if (joined)
+                {
+                    return RedirectToAction("ChooseSubscription", "Subscription");
+                }
+            }
+
+            var gyms = _context.Gyms
+                               .Include(g => g.GymLocations)
+                               .ToList();
+
+            return View(gyms);
+        }
+
+        // ================= Join Gym =================
+
         [HttpGet]
         public IActionResult JoinGym(int id)
         {
-            // الحصول على UserID من الـ Cookie
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-            // الحصول على الـ Member الحالي
             Member? member = _context.Members
                                      .FirstOrDefault(m => m.UserID == userId);
 
@@ -90,39 +116,24 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
                 return RedirectToAction("CompleteProfile");
             }
 
-            // التأكد أنه غير منضم لنفس الجيم
             bool alreadyJoined = _context.GymMembers
-                                         .Any(gm => gm.MemberID == member.MemberID &&
-                                                    gm.GymID == id);
+                                         .Any(g => g.MemberID == member.MemberID);
 
-            if (alreadyJoined)
+            if (!alreadyJoined)
             {
-                TempData["Error"] = "You are already a member of this gym.";
-                return RedirectToAction("ChooseGym");
+                GymMember gymMember = new GymMember
+                {
+                    MemberID = member.MemberID,
+                    GymID = id
+                };
+
+                _context.GymMembers.Add(gymMember);
+                _context.SaveChanges();
+
+                TempData["Success"] = "Gym joined successfully.";
             }
 
-            GymMember gymMember = new GymMember
-            {
-                MemberID = member.MemberID,
-                GymID = id
-            };
-
-            _context.GymMembers.Add(gymMember);
-            _context.SaveChanges();
-
-            TempData["Success"] = "Gym joined successfully.";
-
-            return RedirectToAction("Dashboard", "Home");
-        }
-
-        [HttpGet]
-        public IActionResult ChooseGym()
-        {
-            var gyms = _context.Gyms
-                               .Include(g => g.GymLocations)
-                               .ToList();
-
-            return View(gyms);
+            return RedirectToAction("ChooseSubscription", "Subscription");
         }
     }
 }

@@ -1,0 +1,64 @@
+﻿@model IEnumerable<NXT25_AST4_SWD5_S2_InGym.ViewModels.CoachViewModel>
+
+@{
+    ViewData["Title"] = "Choose Gym Coach";
+}
+
+<div class="container mt-5">
+
+    <h2 class="text-center mb-4">
+        Choose Your Gym Coach
+    </h2>
+
+    <div class="row">
+
+        @foreach (var coach in Model)
+        {
+            <div class="col-md-4 mb-4">
+
+                <div class="card shadow h-100">
+
+                    <div class="card-header bg-primary text-white text-center">
+                        <h4>@coach.FullName</h4>
+                    </div>
+
+                    <div class="card-body">
+
+                        <p>
+                            <strong>Email:</strong>
+                            @coach.Email
+                        </p>
+
+                        <p>
+                            <strong>Speciality:</strong>
+                            @coach.Speciality
+                        </p>
+
+                        <p>
+                            <strong>Rating:</strong>
+                            ⭐ @coach.Rating
+                        </p>
+
+                    </div>
+
+                    <div class="card-footer text-center">
+
+                        <a asp-controller="Coach"
+                           asp-action="SelectCoach"
+                           asp-route-id="@coach.CoachID"
+                           class="btn btn-success w-100">
+
+                            Choose Coach
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>
