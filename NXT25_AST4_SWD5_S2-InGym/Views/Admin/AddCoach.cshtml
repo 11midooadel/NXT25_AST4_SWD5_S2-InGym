@@ -1,0 +1,53 @@
+﻿@model NXT25_AST4_SWD5_S2_InGym.ViewModels.Admin.AddCoachViewModel
+
+<h2>Add Coach</h2>
+
+<form asp-action="AddCoach" method="post">
+
+    <div class="mb-3">
+        <label>First Name</label>
+        <input asp-for="FirstName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Last Name</label>
+        <input asp-for="LastName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Password</label>
+        <input asp-for="Password" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Salary</label>
+        <input asp-for="Salary" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Speciality</label>
+        <input asp-for="Speciality" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Hire Date</label>
+        <input asp-for="HireDate" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Gym</label>
+        <select asp-for="GymID" asp-items="Model.Gyms" class="form-select">
+            <option value="">Choose Gym</option>
+        </select>
+    </div>
+
+    <button class="btn btn-warning">
+        Save Coach
+    </button>
+
+</form>

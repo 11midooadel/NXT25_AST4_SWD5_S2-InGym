@@ -50,12 +50,31 @@ namespace NXT25_AST4_SWD5_S2_InGym.Data
 
             modelBuilder.Entity<MemberWorkoutPlan>()
                 .HasKey(x => new { x.MemberID, x.PlanID });
+            modelBuilder.Entity<MemberWorkoutPlan>()
+    .HasOne(x => x.Member)
+    .WithMany(x => x.MemberWorkoutPlans)
+    .HasForeignKey(x => x.MemberID);
+
+            modelBuilder.Entity<MemberWorkoutPlan>()
+                .HasOne(x => x.WorkoutPlan)
+                .WithMany(x => x.MemberWorkoutPlans)
+                .HasForeignKey(x => x.PlanID);
 
             modelBuilder.Entity<MemberHealthMetric>()
                 .HasKey(x => new { x.MemberID, x.MetricID });
 
             modelBuilder.Entity<WorkoutPlanExercise>()
                 .HasKey(x => new { x.PlanID, x.ExerciseID });
+            modelBuilder.Entity<WorkoutPlanExercise>()
+    .HasOne(x => x.WorkoutPlan)
+    .WithMany(x => x.WorkoutPlanExercises)
+    .HasForeignKey(x => x.PlanID);
+
+            modelBuilder.Entity<WorkoutPlanExercise>()
+                .HasOne(x => x.Exercise)
+                .WithMany(x => x.WorkoutPlanExercises)
+                .HasForeignKey(x => x.ExerciseID);
+
 
             modelBuilder.Entity<MemberGymSub>()
                 .HasKey(x => new { x.MemberID, x.GymSubID });

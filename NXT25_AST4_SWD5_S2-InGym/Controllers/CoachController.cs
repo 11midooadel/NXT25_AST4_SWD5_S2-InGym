@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NXT25_AST4_SWD5_S2_InGym.Data;
+using NXT25_AST4_SWD5_S2_InGym.Models;
 using NXT25_AST4_SWD5_S2_InGym.ViewModels;
+using NXT25_AST4_SWD5_S2_InGym.ViewModels.Coach;
 using System.Security.Claims;
 
 namespace NXT25_AST4_SWD5_S2_InGym.Controllers
@@ -90,5 +93,208 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
 
             return RedirectToAction("Dashboard", "Home");
         }
+        // ================= Coach : My Members =================
+
+        [Authorize(Roles = "Coach")]
+        public IActionResult Members()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var coach = _context.Coaches
+                .FirstOrDefault(c => c.UserID == userId);
+
+            if (coach == null)
+                return RedirectToAction("Dashboard");
+
+            var members = _context.Members
+                .Where(m => m.CoachID == coach.CoachID)
+                .Include(m => m.User)
+                .ToList();
+
+            return View(members);
+        }
+        public IActionResult ManageMember(int id)
+        {
+            var member = _context.Members
+                .Include(m => m.User)
+                .FirstOrDefault(m => m.MemberID == id);
+
+            if (member == null)
+                return NotFound();
+
+            return View(member);
+        }
+        [Authorize(Roles = "Coach")]
+        public IActionResult WorkoutPlans(int memberId)
+        {
+            ViewBag.MemberID = memberId;
+
+            var plans = _context.MemberWorkoutPlans
+                .Where(x => x.MemberID == memberId)
+                .Include(x => x.WorkoutPlan)
+                .Select(x => x.WorkoutPlan)
+                .ToList();
+
+            return View(plans);
+        }
+        // ================= Create Workout Plan =================
+
+        [Authorize(Roles = "Coach")]
+        [HttpGet]
+        public IActionResult CreateWorkoutPlan(int memberId)
+        {
+            var model = new CreateWorkoutPlanViewModel
+            {
+                MemberID = memberId,
+
+                Exercises = _context.Exercises
+                    .Select(x => new SelectListItem
+                    {
+                        Value = x.ExerciseID.ToString(),
+                        Text = x.ExerciseName + " (" + x.MuscleGroup + ")"
+                    })
+                    .ToList()
+            };
+
+            return View(model);
+        }
+        [Authorize(Roles = "Coach")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateWorkoutPlan(CreateWorkoutPlanViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Exercises = _context.Exercises
+                    .Select(x => new SelectListItem
+                    {
+                        Value = x.ExerciseID.ToString(),
+                        Text = x.ExerciseName + " (" + x.MuscleGroup + ")"
+                    })
+                    .ToList();
+
+                return View(model);
+            }
+
+            WorkoutPlan plan = new WorkoutPlan
+            {
+                Goal = model.Goal,
+                CreationDate = DateTime.Now,
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddMonths(1),
+                IsActive = true
+            };
+
+            _context.WorkoutPlans.Add(plan);
+            _context.SaveChanges();
+
+            MemberWorkoutPlan memberPlan = new MemberWorkoutPlan
+            {
+                MemberID = model.MemberID,
+                PlanID = plan.PlanID
+            };
+
+            _context.MemberWorkoutPlans.Add(memberPlan);
+
+            foreach (var exerciseId in model.SelectedExercises)
+            {
+                WorkoutPlanExercise item = new WorkoutPlanExercise
+                {
+                    PlanID = plan.PlanID,
+                    ExerciseID = exerciseId,
+
+                    WorkoutDay = DayOfWeek.Monday,
+
+                    Sets = 3,
+                    Reps = 12
+                };
+
+                _context.WorkoutPlanExercises.Add(item);
+            }
+
+            _context.SaveChanges();
+
+            TempData["Success"] = "Workout Plan Created Successfully.";
+
+            return RedirectToAction(nameof(WorkoutPlans), new
+            {
+                memberId = model.MemberID
+            });
+        }
+        // ================= Manage Workout Plan =================
+
+        [Authorize(Roles = "Coach")]
+        public IActionResult ManageWorkoutPlan(int id)
+        {
+            var plan = _context.WorkoutPlans
+                .Include(x => x.WorkoutPlanExercises)
+                .ThenInclude(x => x.Exercise)
+                .FirstOrDefault(x => x.PlanID == id);
+
+            if (plan == null)
+                return NotFound();
+
+            return View(plan);
+        }
+        // ================= Add Exercise To Plan =================
+
+        [HttpGet]
+        [Authorize(Roles = "Coach")]
+        public IActionResult AddExercise(int planId)
+        {
+            AddExerciseToPlanViewModel model = new()
+            {
+                PlanID = planId,
+
+                Exercises = _context.Exercises
+                    .Select(x => new SelectListItem
+                    {
+                        Value = x.ExerciseID.ToString(),
+                        Text = x.ExerciseName + " (" + x.MuscleGroup + ")"
+                    }).ToList()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Coach")]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddExercise(AddExerciseToPlanViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Exercises = _context.Exercises
+                    .Select(x => new SelectListItem
+                    {
+                        Value = x.ExerciseID.ToString(),
+                        Text = x.ExerciseName + " (" + x.MuscleGroup + ")"
+                    }).ToList();
+
+                return View(model);
+            }
+
+            WorkoutPlanExercise exercise = new()
+            {
+                PlanID = model.PlanID,
+                ExerciseID = model.ExerciseID,
+                WorkoutDay = model.WorkoutDay,
+                Sets = model.Sets,
+                Reps = model.Reps
+            };
+
+            _context.WorkoutPlanExercises.Add(exercise);
+
+            _context.SaveChanges();
+
+            TempData["Success"] = "Exercise Added Successfully.";
+
+            return RedirectToAction(nameof(ManageWorkoutPlan), new
+            {
+                id = model.PlanID
+            });
+        }
+
+
     }
 }

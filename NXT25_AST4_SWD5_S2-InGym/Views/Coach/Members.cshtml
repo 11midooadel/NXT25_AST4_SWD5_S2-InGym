@@ -1,0 +1,78 @@
+﻿@model IEnumerable<NXT25_AST4_SWD5_S2_InGym.Models.Member>
+
+@{
+    ViewData["Title"] = "My Members";
+}
+
+<h2 class="mb-4">
+    My Members
+</h2>
+
+<table class="table table-bordered table-hover">
+
+    <thead class="table-dark">
+
+        <tr>
+
+            <th>Name</th>
+            <th>Email</th>
+            <th>Goal</th>
+            <th>Status</th>
+            <th></th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @item.User.FirstName
+                    @item.User.LastName
+                </td>
+
+                <td>
+                    @item.User.Email
+                </td>
+
+                <td>
+                    @item.Goals
+                </td>
+
+                <td>
+
+                    @if (item.IsActive)
+                    {
+                        <span class="badge bg-success">
+                            Active
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">
+                            Inactive
+                        </span>
+                    }
+
+                </td>
+
+                <td>
+
+                    <a asp-action="ManageMember"
+                       asp-route-id="@item.MemberID"
+                       class="btn btn-primary">
+                        Manage
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

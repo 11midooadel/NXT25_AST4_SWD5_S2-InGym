@@ -1,42 +1,79 @@
 ﻿@model IEnumerable<NXT25_AST4_SWD5_S2_InGym.Models.Gym>
 
-<h2>Gyms</h2>
+@{
+    ViewData["Title"] = "Gyms";
+}
 
-<a asp-action="AddGym" class="btn btn-success mb-3">
-    Add Gym
-</a>
+<div class="container mt-4">
 
-<table class="table table-bordered">
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <thead>
+        <h2>Manage Gyms</h2>
 
-        <tr>
+        <a asp-action="AddGym" class="btn btn-success">
+            + Add Gym
+        </a>
 
-            <th>ID</th>
+    </div>
 
-            <th>Name</th>
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
 
-            <th>Registration Date</th>
+    <table class="table table-bordered table-hover shadow">
 
-        </tr>
+        <thead class="table-dark">
 
-    </thead>
-
-    <tbody>
-
-        @foreach (var gym in Model)
-        {
             <tr>
 
-                <td>@gym.GymID</td>
+                <th>#</th>
 
-                <td>@gym.GymName</td>
+                <th>Gym Name</th>
 
-                <td>@gym.RegistrationDate.ToShortDateString()</td>
+                <th>Location</th>
+
+                <th>Managers</th>
+
+                <th>Actions</th>
 
             </tr>
-        }
 
-    </tbody>
+        </thead>
 
-</table>
+        <tbody>
+
+            @foreach (var gym in Model)
+            {
+                <tr>
+
+                    <td>@gym.GymID</td>
+
+                    <td>@gym.GymName</td>
+
+                    <td>@gym.GymLocations.FirstOrDefault()?.Location</td>
+
+                    <td>@gym.GymManagers.Count()</td>
+
+                    <td>
+
+                        <a asp-action="GymDetails"
+                           asp-route-id="@gym.GymID"
+                           class="btn btn-primary btn-sm">
+
+                            Details
+
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

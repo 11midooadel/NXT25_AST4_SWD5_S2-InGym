@@ -155,7 +155,116 @@ namespace NXT25_AST4_SWD5_S2_InGym.Controllers
 
             TempData["Success"] = "Gym Manager added successfully.";
 
-            return RedirectToAction(nameof(Dashboard));
+            return RedirectToAction(nameof(GymManagers));
+        }
+
+        // ================= View Gym Managers =================
+
+        public IActionResult GymManagers()
+        {
+            var managers = _context.GymManagers
+                .Include(x => x.User)
+                .Include(x => x.Gym)
+                .ToList();
+
+            return View(managers);
+        }
+        // ================= Add Coach =================
+
+        [HttpGet]
+        public IActionResult AddCoach()
+        {
+            AddCoachViewModel model = new AddCoachViewModel();
+
+            model.Gyms = _context.Gyms
+                .Select(g => new SelectListItem
+                {
+                    Value = g.GymID.ToString(),
+                    Text = g.GymName
+                }).ToList();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddCoach(AddCoachViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Gyms = _context.Gyms
+                    .Select(g => new SelectListItem
+                    {
+                        Value = g.GymID.ToString(),
+                        Text = g.GymName
+                    }).ToList();
+
+                return View(model);
+            }
+
+            if (_context.Users.Any(x => x.Email == model.Email))
+            {
+                ModelState.AddModelError("Email", "Email already exists.");
+
+                model.Gyms = _context.Gyms
+                    .Select(g => new SelectListItem
+                    {
+                        Value = g.GymID.ToString(),
+                        Text = g.GymName
+                    }).ToList();
+
+                return View(model);
+            }
+
+            User user = new User
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                PasswordHash = model.Password,
+                Role = "Coach"
+            };
+
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            Coach coach = new Coach
+            {
+                UserID = user.UserID,
+                Salary = model.Salary,
+                HireDate = model.HireDate,
+                Rating = 0,
+                Speciality = model.Speciality
+            };
+
+            _context.Coaches.Add(coach);
+            _context.SaveChanges();
+
+            GymCoach gymCoach = new GymCoach
+            {
+                GymID = model.GymID,
+                CoachID = coach.CoachID
+            };
+
+            _context.GymCoaches.Add(gymCoach);
+            _context.SaveChanges();
+
+            TempData["Success"] = "Coach added successfully.";
+
+            return RedirectToAction(nameof(Coaches));
+        }
+
+        // ================= View Coaches =================
+
+        public IActionResult Coaches()
+        {
+            var coaches = _context.GymCoaches
+                .Include(gc => gc.Coach)
+                    .ThenInclude(c => c.User)
+                .Include(gc => gc.Gym)
+                .ToList();
+
+            return View(coaches);
         }
     }
 }

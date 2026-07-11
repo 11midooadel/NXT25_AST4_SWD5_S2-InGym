@@ -1,0 +1,68 @@
+﻿@model IEnumerable<NXT25_AST4_SWD5_S2_InGym.Models.WorkoutPlan>
+
+@{
+    ViewData["Title"] = "Workout Plans";
+}
+
+<div class="container mt-4">
+
+    <h2>Workout Plans</h2>
+
+    <a asp-action="CreateWorkoutPlan"
+       asp-route-memberId="@ViewBag.MemberID"
+       class="btn btn-success mb-3">
+        Create New Plan
+    </a>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Goal</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Status</th>
+                <th width="220">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.Goal</td>
+
+                    <td>@item.StartDate.ToShortDateString()</td>
+
+                    <td>@item.EndDate.ToShortDateString()</td>
+
+                    <td>
+                        @(item.IsActive ? "Active" : "Inactive")
+                    </td>
+
+                    <td>
+
+                        <a asp-action="ManageWorkoutPlan"
+                           asp-route-id="@item.PlanID"
+                           class="btn btn-primary btn-sm">
+                            Manage
+                        </a>
+
+                        <a asp-action="DeleteWorkoutPlan"
+                           asp-route-id="@item.PlanID"
+                           class="btn btn-danger btn-sm">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

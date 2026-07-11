@@ -1,0 +1,43 @@
+﻿@model IEnumerable<NXT25_AST4_SWD5_S2_InGym.Models.GymCoach>
+
+<h2>Coaches</h2>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gym</th>
+            <th>Speciality</th>
+            <th>Rating</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @item.Coach.User.FirstName
+                    @item.Coach.User.LastName
+                </td>
+
+                <td>@item.Coach.User.Email</td>
+
+                <td>@item.Gym.GymName</td>
+
+                <td>@item.Coach.Speciality</td>
+
+                <td>@item.Coach.Rating</td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
