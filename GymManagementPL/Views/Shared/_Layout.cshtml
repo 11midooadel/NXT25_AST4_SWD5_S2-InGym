@@ -8,70 +8,75 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="../images/icon.svg" type="image/x-icon" />
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Professional Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400..800&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
-          rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
-    <!-- ^ Bootstrap 5.3.8 css file -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Bootstrap 5.3.8 -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <!-- ^ Our main css file -->
+    
+    <!-- Main Stylesheet -->
     <link rel="stylesheet" href="~/css/style.css" />
-    <title>Power fitness | @ViewData["Title"]</title>
+    
+    <title>InGym | @ViewData["Title"]</title>
 </head>
 
 <body>
-    <header>
-        <!-- ^ navbar -->
-        <nav class="navbar navbar-expand-lg bg-white my-3">
+    <header class="sticky-top pt-3">
+        <nav class="navbar navbar-expand-lg bg-white mx-3 mb-3 shadow-sm">
             <div class="container">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/logo.jpg" alt="" />
+                <!-- FontAwesome Logo & Branding -->
+                <a class="navbar-brand d-flex align-items-center gap-2 brand-text" asp-controller="Home" asp-action="Index">
+                    <i class="fa-solid fa-dumbbell fs-3"></i>
+                    <span class="fs-4 fw-bold">InGym</span>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <i class="fa-solid fa-bars fs-4 text-primary-custom"></i>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav m-auto mb-2 mb-lg-0 mt-3 mt-lg-0">
                         <li class="nav-item">
-                        <li class="nav-item">
-                            <a class="nav-link px-3 py-2 mx-2 fw-bolder fs-5 @(CurrentCotroller == "Home" ? "active" : "")" aria-current="page"
-                               asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link px-3 py-2 mx-2 fw-semibold fs-6 @(CurrentCotroller == "Home" ? "active" : "")" aria-current="page"
+                                   asp-controller="Home" asp-action="Index">
+                                <i class="fa-solid fa-house-chimney me-1"></i> Home
+                            </a>
                         </li>
                         @if (User.IsInRole("SuperAdmin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5 @(CurrentCotroller == "Member" ? "active" : "")" aria-current="page" asp-controller="Member" asp-action="Index">Members</a>
+                                <a class="nav-link px-3 py-2 mx-2 fw-semibold fs-6 @(CurrentCotroller == "Member" ? "active" : "")" aria-current="page" asp-controller="Member" asp-action="Index">
+                                    <i class="fa-solid fa-users me-1"></i> Members
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5 @(CurrentCotroller == "Trainer" ? "active" : "")" aria-current="page" asp-controller="Trainer" asp-action="Index">Trainers</a>
+                                <a class="nav-link px-3 py-2 mx-2 fw-semibold fs-6 @(CurrentCotroller == "Trainer" ? "active" : "")" aria-current="page" asp-controller="Trainer" asp-action="Index">
+                                    <i class="fa-solid fa-user-tie me-1"></i> Trainers
+                                </a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5 @(CurrentCotroller == "Session" ? "active" : "")" aria-current="page" asp-controller="Session" asp-action="Index">Sessions</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5 @(CurrentCotroller == "Plan" ? "active" : "")" aria-current="page" asp-controller="Plan" asp-action="Index">Plans</a>
-                        </li>
-                        @* <li class="nav-item">
-                            <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page"
-                               asp-controller="Membership" asp-action="Index">Memberships</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page">
-                                Sessions
-                                Schedule
+                            <a class="nav-link px-3 py-2 mx-2 fw-semibold fs-6 @(CurrentCotroller == "Session" ? "active" : "")" aria-current="page" asp-controller="Session" asp-action="Index">
+                                <i class="fa-regular fa-calendar-check me-1"></i> Sessions
                             </a>
-                        </li> *@
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-2 mx-2 fw-semibold fs-6 @(CurrentCotroller == "Plan" ? "active" : "")" aria-current="page" asp-controller="Plan" asp-action="Index">
+                                <i class="fa-solid fa-clipboard-list me-1"></i> Plans
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <form asp-action="Logout" asp-controller="Account" method="post" class="d-inline">
-                                <button type="submit"
-                                        class="btn btn-link nav-link px-3 py-2 mx-2 fw-bolder fs-5 text-black-alternative">
-                                    Logout
+                                <button type="submit" class="btn btn-link nav-link px-3 py-2 mx-2 fw-semibold fs-6 text-danger text-decoration-none">
+                                    <i class="fa-solid fa-arrow-right-from-bracket me-1"></i> Logout
                                 </button>
                             </form>
                         </li>
@@ -79,14 +84,11 @@
                 </div>
             </div>
         </nav>
-
     </header>
 
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3 page-wrapper">
             @RenderBody()
-
-
         </main>
     </div>
 

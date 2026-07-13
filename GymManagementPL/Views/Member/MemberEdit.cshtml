@@ -2,72 +2,62 @@
 
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card card-details border-0 p-2 shadow">
-                <div class="card-body text-center">
-                    <div class="text-center mt-3">
-                        <img src="~/images/Members/@Model.Photo" alt="@Model.Name" class="rounded-circle"
-                             style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #fff; margin-top: -60px;" />
-                    </div>
-                    <div class="card-body text-center">
-                        <h2 class="mb-1 text-primary-color">@Model.Name</h2>
-                        <form asp-action="MemberEdit" method="post" >
-                            <input asp-for="Name" hidden />
-                            <input asp-for="Photo"  hidden />
-                            <div class="mt-4 text-start">
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <div class="p-3 bg-light rounded">
-                                            <small class="text-muted d-block mb-1">Email</small>
-                                            <input asp-for="Email" class="form-control" />
-                                            <span asp-validation-for="Email" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="p-3 bg-light rounded">
-                                            <small class="text-muted d-block mb-1">Phone</small>
-                                            <input asp-for="Phone" class="form-control" />
-                                            <span asp-validation-for="Phone" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-6">
-                                        <div class="p-3 bg-light rounded">
-                                            <small class="text-muted d-block mb-1">Building Number</small>
-                                            <input asp-for="BuildingNumber" class="form-control" />
-                                            <span asp-validation-for="BuildingNumber"
-                                                  class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="p-3 bg-light rounded">
-                                            <small class="text-muted d-block mb-1">City</small>
-                                            <input asp-for="City" class="form-control" />
-                                            <span asp-validation-for="City" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="p-3 bg-light rounded">
-                                            <small class="text-muted d-block mb-1">Street</small>
-                                            <input asp-for="Street" class="form-control" />
-                                            <span asp-validation-for="Street" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="d-flex justify-content-between gap-2 mt-3 px-3 pb-3">
-                                <a asp-controller="Member" asp-action="Index" class="btn btn-fill ">
-                                    Back to
-                                    List
-                                </a>
-                                <button type="submit" class="btn btn-fill ">Done</button>
-                            </div>
-                        </form>
-                    </div>
+        <div class="col-md-7">
+            <div class="card border-0 p-4 shadow-lg rounded-4 mt-5">
+                <div class="text-center position-relative">
+                    <img src="~/images/Members/@Model.Photo" alt="@Model.Name" class="rounded-circle shadow"
+                         style="width: 140px; height: 140px; object-fit: cover; border: 4px solid var(--clr-white); margin-top: -80px; background: var(--clr-bg-light);" />
                 </div>
+                
+                <div class="card-body text-center pt-3">
+                    <h2 class="mb-4 text-primary-custom fw-bold border-bottom pb-3">Edit @Model.Name</h2>
+                    
+                    <form asp-action="MemberEdit" method="post" class="text-start">
+                        <input asp-for="Name" hidden />
+                        <input asp-for="Photo" hidden />
+                        
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-medium text-muted small"><i class="fa-solid fa-envelope me-1"></i> Email</label>
+                                <input asp-for="Email" class="form-control bg-light" />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+                            
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-medium text-muted small"><i class="fa-solid fa-phone me-1"></i> Phone</label>
+                                <input asp-for="Phone" class="form-control bg-light" />
+                                <span asp-validation-for="Phone" class="text-danger small"></span>
+                            </div>
 
+                            <div class="col-4">
+                                <label class="form-label fw-medium text-muted small"><i class="fa-solid fa-building me-1"></i> Bldg No.</label>
+                                <input asp-for="BuildingNumber" class="form-control bg-light" />
+                                <span asp-validation-for="BuildingNumber" class="text-danger small"></span>
+                            </div>
+                            
+                            <div class="col-8">
+                                <label class="form-label fw-medium text-muted small"><i class="fa-solid fa-road me-1"></i> Street</label>
+                                <input asp-for="Street" class="form-control bg-light" />
+                                <span asp-validation-for="Street" class="text-danger small"></span>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label class="form-label fw-medium text-muted small"><i class="fa-solid fa-city me-1"></i> City</label>
+                                <input asp-for="City" class="form-control bg-light" />
+                                <span asp-validation-for="City" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between gap-3 mt-5">
+                            <a asp-controller="Member" asp-action="Index" class="btn-outline flex-fill text-center">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn-fill flex-fill">
+                                <i class="fa-solid fa-floppy-disk me-2"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

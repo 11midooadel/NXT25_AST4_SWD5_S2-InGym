@@ -6,8 +6,8 @@
 
 @if (TempData["SuccessMessage"] is not null)
 {
-    <div id="Alert" class="alert alert-success alert-dismissible fade show">
-        <i class="bi bi-check-circle-fill me-2"></i>
+    <div id="Alert" class="alert alert-success alert-dismissible fade show shadow-sm border-0">
+        <i class="fa-solid fa-circle-check me-2"></i>
         @TempData["SuccessMessage"]
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
@@ -15,24 +15,28 @@
 
 @if (TempData["ErrorMessage"] is not null)
 {
-    <div id="Alert" class="alert alert-danger alert-dismissible fade show">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    <div id="Alert" class="alert alert-danger alert-dismissible fade show shadow-sm border-0">
+        <i class="fa-solid fa-triangle-exclamation me-2"></i>
         @TempData["ErrorMessage"]
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 }
 
-<div class="container">
-    <header class="d-flex justify-content-end mt-5 mb-4 align-items-center">
-        <a asp-controller="Member" asp-action="Create" class="btn btn-fill fw-medium rounded-pill px-3 py-3">
-            + Add Member
+<div class="container page-wrapper">
+    <header class="d-flex justify-content-between mb-4 align-items-center">
+        <div>
+            <h2 class="text-primary-custom fw-bold mb-0">Our Members</h2>
+            <p class="text-muted">Manage members to achieve their goals</p>
+        </div>
+        <a asp-controller="Member" asp-action="Create" class="btn-fill fw-medium rounded-pill px-4">
+            <i class="fa-solid fa-plus me-1"></i> Add Member
         </a>
     </header>
 
     @if (Model is not null && Model.Any())
     {
-        <div class="table-responsive " style="overflow: visible;">
-            <table class="table table-borderless">
+        <div class="table-wrapper">
+            <table class="table table-borderless mb-0">
                 <thead>
                     <tr>
                         <th><span>@nameof(MemberViewModel.photo)</span></th>
@@ -40,7 +44,7 @@
                         <th><span>@nameof(MemberViewModel.Email)</span></th>
                         <th><span>@nameof(MemberViewModel.Gender)</span></th>
                         <th><span>@nameof(MemberViewModel.Phone)</span></th>
-                        <th><span>Action</span></th>
+                        <th class="text-center"><span>Action</span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,64 +55,54 @@
                                 <span class="avatar">
                                     @if (string.IsNullOrEmpty(member.photo))
                                     {
-                                        <img src="~/images/user.jpg" alt="Default Avatar" class="rounded-circle"
-                                             style="width: 40px; height: 40px;" />
+                                        <img src="~/images/user.jpg" alt="Default Avatar" class="rounded-circle shadow-sm" style="width: 45px; height: 45px; object-fit: cover;" />
                                     }
                                     else
                                     {
-                                        <img src="~/images/Members/@member.photo" alt="Default Avatar" class="rounded-circle"
-                                             style="width: 40px; height: 40px;" />
+                                        <img src="~/images/Members/@member.photo" alt="@member.Name Avatar" class="rounded-circle shadow-sm" style="width: 45px; height: 45px; object-fit: cover;" />
                                     }
                                 </span>
                             </td>
-                            <td><span>@member.Name</span></td>
-                            <td><span>@member.Email</span></td>
-                            <td><span>@member.Gender</span></td>
-                            <td><span>@member.Phone</span></td>
-                            <td class="action position-relative">
+                            <td class="fw-medium text-dark"><span>@member.Name</span></td>
+                            <td class="text-muted"><span>@member.Email</span></td>
+                            <td><span class="badge bg-light text-dark border">@member.Gender</span></td>
+                            <td class="text-muted"><span>@member.Phone</span></td>
+                            <td class="action text-center">
                                 <div class="dropdown">
-                                    <button class="btn btn-link p-0 border-0" type="button"
+                                    <button class="btn btn-link p-2 border-0 text-muted" type="button"
                                             id="dropdownMenuButton-@member.Id" data-bs-toggle="dropdown"
                                             aria-expanded="false">
-                                        <img src="~/images/action dots.jpg" alt="action icon" />
+                                        <i class="fa-solid fa-ellipsis-vertical fs-5"></i>
                                     </button>
-                                    <ul class="dropdown-menu dropdown-menu-start"
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0"
                                         aria-labelledby="dropdownMenuButton-@member.Id">
                                         <li>
                                             <a asp-controller="Member" asp-action="MemberDetails" asp-route-id="@member.Id"
-                                               class="dropdown-item d-flex align-items-center gap-3">
-                                                <img src="~/images/info 1.jpg" alt="info icon"
-                                                     style="width: 20px; height: 20px;" />
+                                                   class="dropdown-item d-flex align-items-center gap-3 py-2">
+                                                <i class="fa-solid fa-address-card text-primary-custom" style="width: 20px;"></i>
                                                 <span>View Member Data</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a asp-controller="Member" asp-action="HealthRecordDetails" asp-route-id="@member.Id"
-                                               class="dropdown-item d-flex align-items-center gap-3">
-                                                <img src="~/images/info 1.jpg" alt="info icon"
-                                                     style="width: 20px; height: 20px;" />
-                                                <span>View Health Record Data</span>
+                                                   class="dropdown-item d-flex align-items-center gap-3 py-2">
+                                                <i class="fa-solid fa-notes-medical text-primary-custom" style="width: 20px;"></i>
+                                                <span>View Health Record</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
                                         <li>
                                             <a asp-controller="Member" asp-action="MemberEdit" asp-route-id="@member.Id"
-                                               class="dropdown-item d-flex align-items-center gap-3">
-                                                <img src="~/images/edit.jpg" alt="edit icon"
-                                                     style="width: 20px; height: 20px;" />
-                                                <span>Edit Member Data</span>
+                                                   class="dropdown-item d-flex align-items-center gap-3 py-2">
+                                                <i class="fa-solid fa-pen-to-square text-warning" style="width: 20px;"></i>
+                                                <span>Edit Member</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
                                         <li>
                                             <a asp-controller="Member" asp-action="Delete" asp-route-id="@member.Id"
-                                               class="dropdown-item d-flex align-items-center gap-3 text-danger">
-                                                <img src="~/images/x-circle 1.jpg" alt="delete icon"
-                                                     style="width: 20px; height: 20px;" />
+                                                   class="dropdown-item d-flex align-items-center gap-3 py-2 text-danger">
+                                                <i class="fa-solid fa-trash-can" style="width: 20px;"></i>
                                                 <span>Delete</span>
                                             </a>
                                         </li>
@@ -120,20 +114,16 @@
                 </tbody>
             </table>
         </div>
-
     }
     else
     {
-        <div class="text-center py-5">
-            <i class="bi bi-person-workspace display-1 text-muted"></i>
-            <h4 class="mt-3 text-muted">No Members Available</h4>
+        <div class="text-center py-5 bg-white rounded-4 shadow-sm border">
+            <i class="fa-solid fa-users-slash display-1 text-muted opacity-50" style="font-weight: 900;"></i>
+            <h4 class="mt-4 text-dark fw-bold">No Members Available</h4>
             <p class="text-muted">Add your first Member to get started</p>
         </div>
     }
-
 </div>
-
-
 
 @section Scripts {
     <partial name="_AlertBoxScript" />

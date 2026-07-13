@@ -1,25 +1,25 @@
 ﻿@{
-    ViewData["Title"] = "EditTrainer";
+    ViewData["Title"] = "Delete Trainer";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card p-5 shadow text-center">
+            <div class="card p-5 shadow-lg rounded-4 border-0 text-center">
+                <i class="fa-solid fa-triangle-exclamation text-danger display-1 mb-4" style="font-weight: 900;"></i>
+                <h3 class="fw-bold text-primary-custom mb-3">Delete Trainer?</h3>
 
-                <p class="fs-3 text-primary-color mb-4">Are you sure you want to delete this Trainer?</p>
-
-                <div class="alert alert-warning text-start" role="alert">
+                <div class="alert alert-danger text-start border-0 shadow-sm rounded-3" role="alert">
+                    <i class="fa-solid fa-circle-exclamation me-2"></i>
                     <strong>Warning!</strong> This action cannot be undone. All Trainer data will be permanently deleted.
                 </div>
 
                 <form asp-action="DeleteConfirmed" method="post" class="mt-4">
                     <input type="hidden" name="id" value="@ViewBag.TrainerId" readonly />
-                    <div class="buttons d-flex justify-content-between gap-3">
-                        <a asp-controller="Trainer" asp-action="Index" class="btn-outline flex-fill">NO</a>
-                        <button type="submit" class="btn-fill flex-fill">Yes</button>
+                    <div class="d-flex justify-content-between gap-3">
+                        <a asp-controller="Trainer" asp-action="Index" class="btn-outline flex-fill text-center">Cancel</a>
+                        <button type="submit" class="btn btn-danger flex-fill fw-bold rounded-3">Yes, Delete</button>
                     </div>
                 </form>
             </div>

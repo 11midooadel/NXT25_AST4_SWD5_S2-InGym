@@ -85,7 +85,7 @@ namespace GymManagementPL.Controllers
             var Result = _planService.ToggleStatus(id);
             if (Result)
             {
-                TempData["SuccessMessage"] = "Plan Sttaus Changed";
+                TempData["SuccessMessage"] = "Plan Status Changed";
             }
             else
             {

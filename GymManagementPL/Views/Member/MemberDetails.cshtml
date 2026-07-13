@@ -2,78 +2,77 @@
 
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card card-details border-0 p-2 shadow">
-                <div class="text-center mt-3">
+        <div class="col-md-7">
+            <div class="card border-0 p-4 shadow-lg rounded-4 mt-5">
+                <div class="text-center position-relative">
                     <img src="~/images/Members/@Model.photo"
                          alt="@Model.Name"
-                         class="rounded-circle"
-                         style="
-                      width: 120px;
-                      height: 120px;
-                      object-fit: cover;
-                      border: 3px solid #fff;
-                      margin-top: -60px;
-                    " />
+                         class="rounded-circle shadow"
+                         style="width: 140px; height: 140px; object-fit: cover; border: 4px solid var(--clr-white); margin-top: -80px; background: var(--clr-bg-light);" />
                 </div>
-                <div class="card-body text-center">
-                    <h2 class="mb-1 text-primary-color">@Model.Name</h2>
-                    <h4 class="mb-2 pb-1 border-bottom d-block">@(Model.PlanName ?? "No Active Plan")</h4>
+                
+                <div class="card-body text-center pt-3">
+                    <h2 class="mb-1 text-primary-custom fw-bold">@Model.Name</h2>
+                    <h5 class="mb-4 text-muted border-bottom pb-3">
+                        <i class="fa-solid fa-medal text-warning me-1"></i> @(Model.PlanName ?? "No Active Plan")
+                    </h5>
+                    
                     <div class="mt-4 text-start">
                         <div class="row g-3">
-                            <div class="col-12">
-                                <div class="p-3 bg-light rounded">
-                                    <small class="text-muted d-block mb-1">Email</small>
-                                    <strong>@Model.Email</strong>
+                            <div class="col-12 col-md-6">
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <small class="text-muted d-block mb-1"><i class="fa-solid fa-envelope me-1"></i> Email</small>
+                                    <strong class="text-dark">@Model.Email</strong>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <div class="p-3 bg-light rounded">
-                                    <small class="text-muted d-block mb-1">Phone</small>
-                                    <strong>@Model.Phone</strong>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="p-3 bg-light rounded">
-                                    <small class="text-muted d-block mb-1">Gender</small>
-                                    <strong>@Model.Gender</strong>
+                            <div class="col-12 col-md-6">
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <small class="text-muted d-block mb-1"><i class="fa-solid fa-phone me-1"></i> Phone</small>
+                                    <strong class="text-dark">@Model.Phone</strong>
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="p-3 bg-light rounded">
-                                    <small class="text-muted d-block mb-1">Date of Birth</small>
-                                    <strong>@Model.DateOfBirth</strong>
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <small class="text-muted d-block mb-1"><i class="fa-solid fa-venus-mars me-1"></i> Gender</small>
+                                    <strong class="text-dark">@Model.Gender</strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <small class="text-muted d-block mb-1"><i class="fa-solid fa-cake-candles me-1"></i> Date of Birth</small>
+                                    <strong class="text-dark">@Model.DateOfBirth</strong>
                                 </div>
                             </div>
 
-                            @if(Model.PlanName is not null)
+                            @if (Model.PlanName is not null)
                             {
                                 <div class="col-6">
-                                    <div class="p-3 bg-light rounded">
-                                        <small class="text-muted d-block mb-1">Membership Start Date</small>
-                                        <strong>@Model.MemberShipStartDate</strong>
+                                    <div class="p-3 bg-light rounded-3 border border-primary-subtle">
+                                        <small class="text-primary-custom d-block mb-1">Membership Start</small>
+                                        <strong class="text-dark">@Model.MemberShipStartDate</strong>
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="p-3 bg-light rounded">
-                                        <small class="text-muted d-block mb-1">Membership End Date</small>
-                                        <strong>@Model.MemberShipEndDate</strong>
+                                    <div class="p-3 bg-light rounded-3 border border-primary-subtle">
+                                        <small class="text-primary-custom d-block mb-1">Membership End</small>
+                                        <strong class="text-dark">@Model.MemberShipEndDate</strong>
                                     </div>
                                 </div>
                             }
 
                             <div class="col-12">
-                                <div class="p-3 bg-light rounded">
-                                    <small class="text-muted d-block mb-1">Address</small>
-                                    <strong>@(Model.Address ?? "No Address")</strong>
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <small class="text-muted d-block mb-1"><i class="fa-solid fa-location-dot me-1"></i> Address</small>
+                                    <strong class="text-dark">@(Model.Address ?? "No Address")</strong>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-between gap-2 px-3 pb-3">
-                    <a asp-controller="Member" asp-action="Index" class="btn btn-fill flex-fill">Back to List</a>
+                <div class="d-flex justify-content-between gap-3 px-3 pb-2 mt-4">
+                    <a asp-controller="Member" asp-action="Index" class="btn-outline flex-fill"><i class="fa-solid fa-arrow-left me-2"></i> Back</a>
+                    <a asp-controller="Member" asp-action="MemberEdit" asp-route-id="@Model.Id" class="btn-fill flex-fill"><i class="fa-solid fa-pen-to-square me-2"></i> Edit Member</a>
                 </div>
             </div>
         </div>

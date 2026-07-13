@@ -7,64 +7,67 @@
 
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-primary-color text-white text-center py-5">
-                    <i class="bi bi-person-badge display-4 mb-3"></i>
-                    <h2 class="mb-0">@Model.Name</h2>
-                    <span class="badge bg-light text-primary-color mt-2">@Model.Specialties Trainer</span>
+        <div class="col-md-7">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-primary-custom text-white text-center py-5 border-0">
+                    <i class="fa-solid fa-id-badge display-4 mb-3"></i>
+                    <h2 class="mb-0 fw-bold text-white">@Model.Name</h2>
+                    <span class="badge bg-white text-primary-custom mt-2 px-3 py-2 rounded-pill shadow-sm">@Model.Specialties Trainer</span>
                 </div>
-                <div class="card-body p-4">
-                    <div class="plan-details">
-                        <div class="detail-item mb-4">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="icon-box me-3">
-                                    <i class="bi bi-envelope text-primary-color fs-4"></i>
+                <div class="card-body p-4 bg-light">
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <div class="p-3 bg-white rounded-3 shadow-sm border-0 d-flex align-items-center h-100">
+                                <div class="icon-box me-3 bg-primary-subtle text-primary-custom rounded-circle d-flex justify-content-center align-items-center" style="width: 45px; height: 45px;">
+                                    <i class="fa-solid fa-envelope fs-5"></i>
                                 </div>
                                 <div>
-                                    <h6 class="mb-0 text-muted">Email</h6>
-                                    <p class="mb-0 fw-bold">@Model.Email</p>
+                                    <h6 class="mb-0 text-muted small">Email</h6>
+                                    <p class="mb-0 fw-bold text-dark">@Model.Email</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="detail-item mb-4">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="icon-box me-3">
-                                    <i class="bi bi-telephone text-primary-color fs-4"></i>
+                        <div class="col-12 col-md-6">
+                            <div class="p-3 bg-white rounded-3 shadow-sm border-0 d-flex align-items-center h-100">
+                                <div class="icon-box me-3 bg-primary-subtle text-primary-custom rounded-circle d-flex justify-content-center align-items-center" style="width: 45px; height: 45px;">
+                                    <i class="fa-solid fa-phone fs-5"></i>
                                 </div>
                                 <div>
-                                    <h6 class="mb-0 text-muted">Phone</h6>
-                                    <p class="mb-0 fw-bold">@Model.Phone</p>
+                                    <h6 class="mb-0 text-muted small">Phone</h6>
+                                    <p class="mb-0 fw-bold text-dark">@Model.Phone</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="detail-item mb-4">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="icon-box me-3">
-                                    <i class="bi bi-calendar-date text-primary-color fs-4"></i>
+                        <div class="col-12 col-md-6">
+                            <div class="p-3 bg-white rounded-3 shadow-sm border-0 d-flex align-items-center h-100">
+                                <div class="icon-box me-3 bg-primary-subtle text-primary-custom rounded-circle d-flex justify-content-center align-items-center" style="width: 45px; height: 45px;">
+                                    <i class="fa-solid fa-calendar-days fs-5"></i>
                                 </div>
                                 <div>
-                                    <h6 class="mb-0 text-muted">Date Of Birth</h6>
-                                    <p class="mb-0 fw-bold">@Model.DateOfBirth</p>
+                                    <h6 class="mb-0 text-muted small">Date Of Birth</h6>
+                                    <p class="mb-0 fw-bold text-dark">@Model.DateOfBirth</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="detail-item mb-4">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="icon-box me-3">
-                                    <i class="bi bi-geo-alt text-primary-color fs-4"></i>
+                        
+                        <div class="col-12 col-md-6">
+                            <div class="p-3 bg-white rounded-3 shadow-sm border-0 d-flex align-items-center h-100">
+                                <div class="icon-box me-3 bg-primary-subtle text-primary-custom rounded-circle d-flex justify-content-center align-items-center" style="width: 45px; height: 45px;">
+                                    <i class="fa-solid fa-location-dot fs-5"></i>
                                 </div>
                                 <div>
-                                    <h6 class="mb-0 text-muted">Address</h6>
-                                    <p class="mb-0 fw-bold">@Model.Address</p>
+                                    <h6 class="mb-0 text-muted small">Address</h6>
+                                    <p class="mb-0 fw-bold text-dark">@Model.Address</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between gap-2 px-3 pb-3">
-                            <a asp-controller="Trainer" asp-action="Index" class="btn btn-fill flex-fill">Back to List</a>
-                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between gap-3 mt-4 pt-2">
+                        <a asp-controller="Trainer" asp-action="Index" class="btn-outline flex-fill text-center"><i class="fa-solid fa-arrow-left me-2"></i> Back</a>
+                        <a asp-controller="Trainer" asp-action="Edit" asp-route-id="@Model.Id" class="btn-fill flex-fill text-center"><i class="fa-solid fa-pen-to-square me-2"></i> Edit Trainer</a>
                     </div>
                 </div>
             </div>
